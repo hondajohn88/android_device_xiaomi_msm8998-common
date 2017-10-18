@@ -1,4 +1,4 @@
-ro.sf.lcd_density=480
+ro.sf.lcd_density=420
 
 # System property for AD
 ro.qcom.ad=1

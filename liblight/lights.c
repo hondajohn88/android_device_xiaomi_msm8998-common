@@ -76,11 +76,11 @@ static int hw_buttons;
 char const*const PERSISTENCE_FILE
         = "/sys/class/graphics/fb0/msm_fb_persist_mode";
 
-#define RAMP_SIZE 8
-static int BRIGHTNESS_RAMP[RAMP_SIZE] = { 0, 12, 25, 37, 50, 72, 85, 100 };
-#define RAMP_STEP_DURATION 50
+#define RAMP_SIZE 17
+static int BRIGHTNESS_RAMP[RAMP_SIZE] = { 0, 5, 10, 15, 20, 30, 40, 50, 60, 70, 60, 50, 40, 30, 20, 10, 0 };
+#define RAMP_STEP_DURATION 3000
 
-#define DEFAULT_MAX_BRIGHTNESS 255
+#define DEFAULT_MAX_BRIGHTNESS 200
 int max_brightness;
 
 /**
@@ -284,8 +284,8 @@ static int set_speaker_light_locked(struct light_device_t* dev,
         break;
     case LIGHT_FLASH_NONE:
     default:
-        onMS = 0;
-        offMS = 0;
+        onMS = 30;
+        offMS = 1000;
         break;
     }
 
@@ -302,7 +302,7 @@ static int set_speaker_light_locked(struct light_device_t* dev,
         pauseHi = onMS - (stepDuration * RAMP_SIZE * 2);
         if (stepDuration * RAMP_SIZE * 2 > onMS) {
             stepDuration = onMS / (RAMP_SIZE * 2);
-            pauseHi = 0;
+            pauseHi = 30;
         }
 
         // white
