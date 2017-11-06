@@ -25,12 +25,12 @@ fi
 
 # No encryption mode file
 if [[ ! -f $ENCRYPTION ]]; then
-    return 1
+    return 0
 fi
 
 # Encryption is not FBE
 if [[ "$(cat $ENCRYPTION)" != "ice" ]]; then
-    return 2
+    return 0
 fi
 
 return 0
