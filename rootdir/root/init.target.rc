@@ -98,6 +98,19 @@ on post-fs-data
     mkdir /data/misc/qdmastats 0700 system system
     mkdir /data/misc/qdma 0770 system system
 
+    mkdir /data/usf 0700 system system
+
+service usf_proximity /system/bin/usf_proximity
+    class late_start
+    user system
+    group system inet audio
+
+service usf-post-boot /system/bin/sh /system/etc/usf_post_boot.sh
+    class late_start
+    user root
+    disabled
+    oneshot
+
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
 on boot
@@ -156,8 +169,8 @@ on boot
 #Peripheral manager
 service per_mgr /system/bin/pm-service
     class core
-    user system
-    group system
+    user root
+    group root
     ioprio rt 4
 
 service per_proxy /system/bin/pm-proxy
@@ -318,19 +331,8 @@ service audio_info /system/bin/audio_info
 #    group system inet
 #    disabled
 #
-#service usf_proximity /system/bin/usf_proximity
-#    user system
-#    group system inet
-#    disabled
-#
-#service usf-post-boot /system/bin/sh /system/etc/usf_post_boot.sh
-#    class late_start
-#    user root
-#    disabled
-#    oneshot
-#
-#on property:init.svc.bootanim=stopped
-#    start usf-post-boot
+on property:init.svc.bootanim=stopped
+    start usf-post-boot
 #
 #
 #on boot
