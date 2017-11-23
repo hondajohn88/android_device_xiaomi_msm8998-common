@@ -1,2 +1,5 @@
 sms-sec                                                          u:object_r:sms_secure_service:s0
 android.hardware.fingerprint.IGoodixFingerprintDaemon            u:object_r:fingerprintd_service:s0
+elliptic                                			 u:object_r:elliptic_service:s0
+usf-post-boot                                			 u:object_r:usf-post-boot_service:s0
+
