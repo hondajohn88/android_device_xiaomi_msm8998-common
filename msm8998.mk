@@ -113,11 +113,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     Snap
 
-# Device config scripts
-PRODUCT_PACKAGES += \
-    usf_post_boot.sh \
-    usf_settings.sh
-
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
     cneapiclient \
