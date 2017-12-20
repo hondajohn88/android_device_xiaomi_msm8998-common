@@ -65,7 +65,7 @@ PRODUCT_COPY_FILES += \
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+PRODUCT_AAPT_PREF_CONFIG := xxxhdpi
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1920
@@ -82,27 +82,18 @@ PRODUCT_PACKAGES += \
     audio.r_submix.default \
     audio.usb.default \
     libaudio-resampler \
+    libaudioroute \
     libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
+    libtinycompress_vendor \
     libvolumelistener \
     tinymix
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
-    $(LOCAL_PATH)/audio/audio_output_policy.conf:system/vendor/etc/audio_output_policy.conf \
-    $(LOCAL_PATH)/audio/audio_platform_info.xml:system/etc/audio_platform_info.xml \
-    $(LOCAL_PATH)/audio/audio_policy_configuration.xml:system/etc/audio_policy_configuration.xml \
-    $(LOCAL_PATH)/audio/listen_platform_info.xml:system/etc/listen_platform_info.xml \
-    $(LOCAL_PATH)/audio/sound_trigger_mixer_paths_wcd9330.xml:system/etc/sound_trigger_mixer_paths_wcd9330.xml \
-    $(LOCAL_PATH)/audio/sound_trigger_mixer_paths.xml:system/etc/sound_trigger_mixer_paths.xml \
-    $(LOCAL_PATH)/audio/sound_trigger_platform_info.xml:system/etc/sound_trigger_platform_info.xml
+    $(LOCAL_PATH)/audio/default_volume_tables.xml:system/etc/default_volume_tables.xml \
 
 PRODUCT_COPY_FILES += \
-    $(TOPDIR)frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration.xml:/system/etc/a2dp_audio_policy_configuration.xml \
-    $(TOPDIR)frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:/system/etc/audio_policy_volumes.xml \
-    $(TOPDIR)frameworks/av/services/audiopolicy/config/default_volume_tables.xml:/system/etc/default_volume_tables.xml \
-    $(TOPDIR)frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:/system/etc/r_submix_audio_policy_configuration.xml \
     $(TOPDIR)frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:/system/etc/usb_audio_policy_configuration.xml
 
 # ANT+
@@ -211,6 +202,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     com.android.nfc_extras \
     com.nxp.nfc.nq \
+    libnqnfc-nci \
+    libp61-jcop-kit \
     nfc_nci.nqx.default \
     NQNfcNci \
     nqnfcee_access.xml \
@@ -219,6 +212,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
+    $(LOCAL_PATH)/configs/nfc/libnfc-nxp_default.conf:system/etc/libnfc-nxp_default.conf \
     $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf
 
 # OMX
@@ -245,9 +239,12 @@ PRODUCT_PACKAGES += \
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.qcom \
+    init.mdm.sh \
     init.msm.usb.configfs.rc \
+    init.qcom.factory.rc \
     init.qcom.rc \
     init.qcom.sh \
+    init.qcom.syspart_fixup.sh \
     init.qcom.sensors.sh \
     init.qcom.usb.rc \
     init.qcom.usb.sh \
@@ -311,3 +308,5 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini
 
+# TWRP Recovery
+#PRODUCT_COPY_FILES += $(LOCAL_PATH)/twrp.fstab:recovery/root/etc/twrp.fstab

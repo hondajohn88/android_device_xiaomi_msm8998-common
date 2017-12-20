@@ -1,4 +1,4 @@
-ro.sf.lcd_density=480
+ro.sf.lcd_density=420
 
 # System property for AD
 ro.qcom.ad=1
@@ -272,5 +272,3 @@ persist.audio.dirac.speaker=true
 persist.audio.speaker.dualmode=true
 
 ro.wlan.mimo=1
-
-ro.mk.maintainer=wood

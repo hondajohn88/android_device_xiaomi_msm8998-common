@@ -136,11 +136,11 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
-# MK Hardware
+# CM Hardware
 BOARD_HARDWARE_CLASS += \
-    hardware/mokee/mkhw \
-    $(VENDOR_PATH)/mkhw
-BOARD_USES_MOKEE_HARDWARE := true
+    hardware/cyanogen/cmhw \
+    $(VENDOR_PATH)/cmhw
+BOARD_USES_CYANOGEN_HARDWARE := true
 TARGET_TAP_TO_WAKE_NODE :=  "/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1/wake_gesture"
 
 # CNE and DPM
@@ -211,6 +211,23 @@ TARGET_RECOVERY_FSTAB := $(VENDOR_PATH)/rootdir/root/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 
+# TWRP specific build flags
+#TW_THEME := portrait_hdpi
+#RECOVERY_SDCARD_ON_DATA := true
+#BOARD_HAS_NO_REAL_SDCARD := true
+#TARGET_RECOVERY_QCOM_RTC_FIX := true
+#TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+#TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/soc/6a00000.ssusb/6a00000.dwc3/gadget/lun0/file"
+#TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+#TW_MAX_BRIGHTNESS := 255
+#TW_DEFAULT_BRIGHTNESS := 153
+#TW_SCREEN_BLANK_ON_BOOT := true
+#TW_INCLUDE_NTFS_3G := true
+#TW_EXCLUDE_SUPERSU := true
+#TW_EXTRA_LANGUAGES := true
+#TW_INCLUDE_CRYPTO := true
+#TW_INPUT_BLACKLIST := "hbtp_vm"
+
 # Releasetools
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_xiaomi
 TARGET_RELEASETOOLS_EXTENSIONS := $(VENDOR_PATH)
@@ -248,7 +265,9 @@ WIFI_DRIVER_MODULE_NAME := "wlan"
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Properties
-TARGET_SYSTEM_PROP += $(VENDOR_PATH)/system.prop
+TARGET_SYSTEM_PROP += \
+    $(VENDOR_PATH)/system.prop \
+    $(VENDOR_PATH)/cust.prop
 
 # inherit from the proprietary version
 -include vendor/xiaomi/msm8998-common/BoardConfigVendor.mk

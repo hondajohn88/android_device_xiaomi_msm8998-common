@@ -26,6 +26,7 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
+import init.offline.log.rc
 
 on early-init
     mkdir /firmware 0771 system system
@@ -59,13 +60,28 @@ on fs
     # these partition flashed on the device. Failure to mount any partition in fstab file
     # results in failure to launch late-start class.
 
+    wait /dev/block/bootdevice/by-name/cache
+    mount ext4 /dev/block/bootdevice/by-name/cache /cache nosuid nodev barrier=1
+
     mkdir /persist/data 0700 system system
     mkdir /persist/wlan_bt 0700 system system
-    mkdir /persist/audio 0700 system system
+    mkdir /persist/audio 0755 system system
     mkdir /persist/bms 0700 root system
+    mkdir /persist/subsys 0700 system system
     restorecon_recursive /persist
 
+    wait /dev/block/bootdevice/by-name/dsp
+    mount ext4 /dev/block/bootdevice/by-name/dsp /dsp ro nosuid nodev barrier=1
+
+    wait /dev/block/bootdevice/by-name/modem
+    mount vfat /dev/block/bootdevice/by-name/modem /firmware ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_file:s0
+
+    wait /dev/block/bootdevice/by-name/bluetooth
+    mount vfat /dev/block/bootdevice/by-name/bluetooth /bt_firmware ro shortname=lower,uid=1002,gid=3002,dmask=227,fmask=337,context=u:object_r:bt_firmware_file:s0
+
     chmod 644 /persist/audio/us_manual_cal
+    chown system system /dev/tiload_node
+    chmod 660 /dev/tiload_node
 
 on post-fs
     start qseecomd
@@ -86,9 +102,10 @@ on post-fs-data
     mkdir /data/misc/seemp 0700 system system
     mkdir /data/nfc 0770 nfc nfc
     mkdir /data/fpc 0770 system system
-    mkdir /data/fpc/s 0771 system system
+    mkdir /data/misc/fpc 0770 system system
     mkdir /persist/fpc 0770 system system
     mkdir /data/thermal 0771 system system
+    mkdir /data/thermal/config 0771 system system
     mkdir /data/misc/touch 0771 system system
     chown system system /dev/sysmatdrv
     chmod 0660 /dev/sysmatdrv
@@ -134,18 +151,19 @@ on boot
    chown system system /persist/speccfg/partition
 
    chown system system /sys/bus/platform/devices/soc:fingerprint_fpc/irq
+   chown system system /sys/bus/platform/devices/soc:fingerprint_fpc/irq_enable
    chown system system /sys/bus/platform/devices/soc:fingerprint_fpc/wakeup_enable
    chown system system /sys/bus/platform/devices/soc:fingerprint_fpc/hw_reset
    chown system system /sys/bus/platform/devices/soc:fingerprint_fpc/device_prepare
    chown system system /sys/bus/platform/devices/soc:fingerprint_fpc/vendor
    chown system system /sys/bus/platform/devices/soc:fingerprint_fpc/fingerdown_wait
-   chown system system /data/fpc/calibration_image.pndat
+   chown system system /data/misc/fpc/calibration_image.pndat
    chmod 0700 /sys/bus/platform/devices/soc:fingerprint_fpc/irq
    chmod 0700 /sys/bus/platform/devices/soc:fingerprint_fpc/wakeup_enable
    chmod 0700 /sys/bus/platform/devices/soc:fingerprint_fpc/hw_reset
    chmod 0700 /sys/bus/platform/devices/soc:fingerprint_fpc/device_prepare
    chmod 0700 /sys/bus/platform/devices/soc:fingerprint_fpc/vendor
-   chmod 0600 /data/fpc/calibration_image.pndat
+   chmod 0600 /data/misc/fpc/calibration_image.pndat
 
 # access permission for Speaker SmartPA
     chmod 0666 /dev/i2c-10
@@ -166,12 +184,6 @@ service per_proxy /system/bin/pm-proxy
     group system
     disabled
 
-on property:ro.boot.fingerprint=fpc
-    setprop ro.hardware.fingerprint fpc
-
-on property:ro.boot.fingerprint=goodix
-    setprop ro.hardware.fingerprint goodix
-
 on property:init.svc.per_mgr=running
     start per_proxy
 
@@ -184,6 +196,9 @@ on property:persist.adb.tcp.port=*
 
 on charger
     start hvdcp_opti
+
+on property:ro.boot.audio=chiron-s
+    export ADSP_LIBRARY_PATH "/system/vendor/lib/rfsa/adsp/chiron-s;/system/lib/rfsa/adsp;/system/vendor/lib/rfsa/adsp;/dsp"
 
 ## import cne init file
 service qvop-daemon /system/bin/qvop-daemon
@@ -242,11 +257,12 @@ service thermal-engine /system/vendor/bin/thermal-engine -T
    socket thermal-recv-passive-client stream 0666 system system
    group root
 
-service tpdbg /system/bin/touch_debug
-   class main
-   user root
-   group root
-   socket tpdbg-socket stream 0666 system system
+#service tpdbg /system/bin/touch_debug
+#   class main
+#   user root
+#   group root
+#   socket tpdbg-socket stream 0666 system system
+#   oneshot
 
 #service security-check1 /sbin/security_boot_check system
 #    class core
@@ -504,6 +520,15 @@ service fingerprintd /system/bin/fingerprintd
     user system
     group system sdcard_rw
 
+on property:init.svc.zygote=stopped
+    stop fingerprintd
+
+on property:init.svc.zygote=running
+    start fingerprintd
+
+on property:init.svc.zygote=restarting
+    stop fingerprintd
+
 service displayfeature /system/bin/displayfeature
     class late_start
     user root
@@ -545,6 +570,10 @@ service vsimservice /system/bin/vsimd
 service mlipayservice /system/bin/mlipayd
     class late_start
 
+service fidoca /system/bin/fidoca
+    class late_start
+    disabled
+
 service hvdcp_opti /system/bin/hvdcp_opti
      class main
      user root
@@ -578,11 +607,10 @@ service qdmastatsd /system/bin/qdmastatsd
     user system
     group system
 
-service readmac /system/bin/readmac
-    class main
+service display_count /system/bin/display_count
+    class late_start
     user root
-    group qcom_diag
-    oneshot
+    group root
 
 on charger
     write /sys/class/input/input0/enabled 0
@@ -605,7 +633,10 @@ on charger
     write /sys/devices/system/cpu/cpu6/online 0
     write /sys/devices/system/cpu/cpu7/online 0
     write /sys/module/msm_thermal/parameters/enabled "N"
+    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
     start hvdcp_opti
+
+    start thermal-engine
 
 on property:slpi.restart=1
     write /sys/kernel/debug/msm_subsys/slpi restart
@@ -621,3 +652,6 @@ on property:persist.audio.rcv_time=*
 
 on property:persist.audio.plug_times=*
    start audio_info
+
+on property:ro.boot.fpsensor=*
+   start fidoca

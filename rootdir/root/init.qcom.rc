@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2012, 2014-2016, The Linux Foundation. All rights reserved.
+# Copyright (c) 2009-2012, 2014-2017, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -25,10 +25,11 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import init.qcom.power.rc
 import init.qcom.usb.rc
 import init.msm.usb.configfs.rc
 import init.target.rc
+import init.qcom.factory.rc
+import init.qcom.test.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -52,29 +53,17 @@ on init
 
 on post-fs
     chmod 0755 /sys/kernel/debug/tracing
+    restorecon /sys/kernel/debug/tracing/trace_marker
+    insmod /system/lib/modules/exfat.ko
 
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
-
     # Allow subsystem (modem etc) debugging
-    write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
-    write /sys/module/pil_msa/parameters/pbl_mba_boot_timeout_ms ${persist.sys.mba_boot_timeout}
-    write /sys/module/pil_msa/parameters/modem_auth_timeout_ms ${persist.sys.modem_auth_timeout}
-    write /sys/module/peripheral_loader/parameters/proxy_timeout_ms ${persist.sys.pil_proxy_timeout}
-
     write /sys/kernel/boot_adsp/boot 1
     write /sys/kernel/boot_cdsp/boot 1
     write /sys/kernel/boot_slpi/boot 1
     exec u:r:qti_init_shell:s0 -- /init.qcom.early_boot.sh
-
-    # SSR setup
-    write /sys/bus/msm_subsys/devices/subsys0/restart_level "related"
-    write /sys/bus/msm_subsys/devices/subsys1/restart_level "related"
-    write /sys/bus/msm_subsys/devices/subsys2/restart_level "related"
-    write /sys/bus/msm_subsys/devices/subsys3/restart_level "related"
-    write /sys/bus/msm_subsys/devices/subsys4/restart_level "related"
-    write /sys/bus/msm_subsys/devices/subsys5/restart_level "related"
 
 on boot
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
@@ -127,33 +116,6 @@ on boot
 
     #Create NETMGR daemon socket area
     mkdir /dev/socket/netmgr 0750 radio radio
-
-    # RGB lights
-    chown system system /sys/class/leds/white/brightness
-    chown system system /sys/class/leds/white/pause_lo
-    chown system system /sys/class/leds/white/pause_hi
-    chown system system /sys/class/leds/white/blink
-    chown system system /sys/class/leds/white/ramp_step_ms
-    chown system system /sys/class/leds/white/duty_pcts
-    chown system system /sys/class/leds/white/start_idx
-
-    chmod 660 /sys/class/leds/white/brightness
-    chmod 660 /sys/class/leds/white/ramp_step_ms
-    chmod 660 /sys/class/leds/white/duty_pcts
-    chmod 660 /sys/class/leds/white/start_idx
-
-    # LED torch permissions
-    chmod 0666 /sys/class/leds/led:torch_0/brightness
-    chmod 0666 /sys/class/leds/led:torch_1/brightness
-    chmod 0666 /sys/class/leds/led:switch_0/brightness
-    chmod 0666 /sys/class/leds/led:switch_1/brightness
-
-    # Button backlight permissions
-    chown system system /sys/class/leds/button-backlight1/brightness
-
-    # dt2w node
-    chmod 0660 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1/wake_gesture
-    chown system system /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1/wake_gesture
 
     setprop wifi.interface wlan0
 
@@ -478,6 +440,7 @@ on property:persist.sys.ssr.enable_ramdumps=0
     write /sys/module/subsystem_restart/parameters/enable_ramdumps 0
 
 on property:sys.boot_completed=1
+    exec u:r:qti_init_shell:s0 -- /init.qcom.crashdata.sh
     write /dev/kmsg "Boot completed "
     #Reset read ahead for dm-0 and dm-1 to 512kb
     write /sys/block/dm-0/queue/read_ahead_kb 512
@@ -590,7 +553,7 @@ on property:persist.download_mode=1
 service start_hci_filter /system/bin/wcnss_filter
     class late_start
     user bluetooth
-    group bluetooth qcom_diag system wakelock
+    group bluetooth qcom_diag system wakelock sdcard_rw sdcard_r media_rw
     disabled
 
 #net_admin capability needed to write rfkill sysfs entry
@@ -599,6 +562,7 @@ service fmhal_service /system/bin/fmhal_service
     user bluetooth
     group bluetooth net_bt_admin
     disabled
+    oneshot
 
 service config_bt_addr /system/bin/btnvtool -O
     class core
@@ -663,6 +627,7 @@ service ftmd /system/bin/ftmdaemon
     class late_start
     user root
     group bluetooth net_bt_admin misc net_bt_stack qcom_diag net_bt
+    disabled
     oneshot
 
 service bridgemgrd /system/bin/bridgemgrd
@@ -689,26 +654,30 @@ service qmuxd /system/bin/qmuxd
     class main
     user root
     group radio audio bluetooth gps nfc qcom_diag
+    disabled
 
 service netmgrd /system/bin/netmgrd
     class main
-    group radio system wakelock
+    disabled
 
 service ipacm-diag /system/bin/ipacm-diag
     class main
     user system
     socket ipacm_log_file dgram 660 system net_admin
     group net_admin qcom_diag
+    disabled
 
 service ipacm /system/bin/ipacm
     class main
     user net_admin
     group net_admin inet
+    disabled
 
 service qti /system/vendor/bin/qti
     class main
     user radio
     group radio net_raw qcom_diag usb net_admin
+    disabled
 
 service sensors /system/bin/sensors.qcom
     class core
@@ -739,7 +708,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
     -I/system/etc/wifi/p2p_supplicant_overlay.conf -N \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 \
+    -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 -dd \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
 #   we will start as root and wpa_supplicant will switch to user wifi
 #   after setting up the capabilities required for WEXT
@@ -753,7 +722,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
 service wpa_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets \
+    -O/data/misc/wifi/sockets -dd \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
@@ -767,7 +736,7 @@ service wpa_supplicant /system/bin/wpa_supplicant \
 service wigig_supplicant /system/bin/wpa_supplicant \
     -iwigig0 -Dnl80211 -c/data/misc/wifi/wigig_supplicant.conf \
     -m/data/misc/wifi/wigig_p2p_supplicant.conf \
-    -O/data/misc/wifi/wigig_sockets \
+    -O/data/misc/wifi/wigig_sockets -dd \
     -e/data/misc/wifi/wigig_entropy.bin -g@android:wpa_wigig0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
@@ -862,10 +831,11 @@ service wifi_ftmd /system/bin/wifi_ftmd
 on property:wifi.ftmd.load=true
     insmod /system/lib/modules/pronto/pronto_wlan.ko con_mode=5
 
-service cnss_diag /system/bin/cnss_diag -q -b 128
+service cnss_diag /system/bin/cnss_diag -q -f -b 128
     class late_start
     user system
     group system wifi inet net_admin sdcard_rw media_rw diag
+    disabled
     oneshot
 
 service tcpdump /system/xbin/tcpdump -i any -W 2 -C 2 -s 134 -w /sdcard/MIUI/debug_log/common/tcpdump.pcap
@@ -1038,6 +1008,15 @@ service ril-daemon2 /system/bin/rild -c 2
     socket rild2 stream 660 root radio
     socket rild-debug2 stream 660 radio system
     user root
+    disabled
+    group radio cache inet misc audio sdcard_r sdcard_rw qcom_diag diag log net_raw system
+
+service ril-daemon3 /system/bin/rild -c 3
+    class main
+    socket rild3 stream 660 root radio
+    socket rild-debug3 stream 660 radio system
+    user root
+    disabled
     group radio cache inet misc audio sdcard_r sdcard_rw qcom_diag diag log net_raw system
 
 service usb_uicc_enable /system/bin/sh /system/etc/init.qcom.uicc.sh
@@ -1200,6 +1179,7 @@ on charger
    wait /dev/block/bootdevice/by-name/system
    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
    setprop sys.usb.config adb
+   start leds-sh
 
 #add poweroffhandler
 service poweroffhandler /system/bin/poweroffhandler
