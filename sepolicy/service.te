@@ -1,3 +1,1 @@
 type sms_secure_service, service_manager_type;
-type qfp_proxy_service, service_manager_type;
-type elliptic_service, service_manager_type;

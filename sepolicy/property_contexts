@@ -1,16 +1,8 @@
-#line 1 "system/sepolicy/property_contexts"
-##########################
-# property service keys
-#
-#
-#line 1 "/media/xinkid/Source/Omnirom7.1.2/out/target/product/chiron/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
-
-#line 1 "vendor/omni/sepolicy/property_contexts"
-###########################
-# OmniROM common sepolicy
-#
-
-service.adb.tcp. u:object_r:adbtcp_prop:s0
-omni.userinit.active u:object_r:userinit_prop:s0
-
+service.soundcard.         u:object_r:audio_prop:s0
+audio.                     u:object_r:audio_prop:s0
+dual.camera.cs.br          u:object_r:camera_prop:s0
+ro.sys.oem.sno             u:object_r:system_radio_prop:s0
+sys.fake_bs_flag0          u:object_r:system_radio_prop:s0
+sys.fake_bs_flag1          u:object_r:system_radio_prop:s0
+sys.panel.                 u:object_r:system_panel_prop:s0
 

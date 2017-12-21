@@ -5,6 +5,7 @@ LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_CERTIFICATE := platform
 LOCAL_PRIVILEGED_MODULE := true
 LOCAL_PACKAGE_NAME := ConfigPanel
+LOCAL_REQUIRED_MODULES := XiaomiPocketMode
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
     android-support-v14-preference \
@@ -21,6 +22,7 @@ LOCAL_AAPT_FLAGS := \
 
 LOCAL_RESOURCE_DIR := \
     $(LOCAL_PATH)/res \
+    $(LOCAL_PATH)/../../../../packages/resources/devicesettings/res \
     frameworks/support/v14/preference/res \
     frameworks/support/v7/appcompat/res \
     frameworks/support/v7/preference/res \
