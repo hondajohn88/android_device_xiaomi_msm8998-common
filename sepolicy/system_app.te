@@ -1,9 +1,14 @@
 # Allow binder calls to fingerprintd
-binder_call(system_app, fingerprintd)
+allow system_app fingerprintd:binder { call transfer };
 
 # Allow ConfigPanel to work
 allow system_app sysfs_fpc_keyevents:file rw_file_perms;
 allow system_app sysfs_fpc_wakeup:file rw_file_perms;
+allow system_app sysfs_goodix_keyevents:file rw_file_perms;
+allow system_app sysfs_goodix_wakeup:file rw_file_perms;
 
 # Allow PocketMode to work
 allow system_app sysfs_fpc_proximity:file rw_file_perms;
+allow system_app sysfs_goodix_proximity:file rw_file_perms;
+
+allow system_app qfp_proxy_service:service_manager add;

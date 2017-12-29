@@ -152,8 +152,23 @@ on boot
     chown system system /sys/class/leds/button-backlight1/brightness
 
     # dt2w node
-    chmod 0660 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1/wake_gesture
+    chmod 0700 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1/wake_gesture
     chown system system /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1/wake_gesture
+
+    # Access permission for fingerprint
+    chown system system /sys/devices/soc/soc:fpc_fpc1020/irq
+    chown system system /sys/devices/soc/soc:fpc_fpc1020/enable_key_events
+    chown system system /sys/devices/soc/soc:fpc_fpc1020/enable_wakeup
+    chown system system /sys/devices/soc/soc:fpc_fpc1020/proximity_state
+
+    # Home button node
+    chmod 0700 /sys/devices/soc/soc:fpc_fpc1020/enable_key_events
+
+    # Wakeup node
+    chmod 0700 /sys/devices/soc/soc:fingerprint_fpc/power/wakeup_active
+    chown system system /sys/devices/soc/soc:fingerprint_fpc/power/wakeup_active
+    chmod 0666 /sys/bus/platform/devices/soc:fingerprint_goodix/power/wakeup_active
+   chown system system /sys/bus/platform/devices/soc:fingerprint_goodix/power/wakeup_active
 
     setprop wifi.interface wlan0
 
@@ -1038,7 +1053,7 @@ service ril-daemon2 /system/bin/rild -c 2
     socket rild2 stream 660 root radio
     socket rild-debug2 stream 660 radio system
     user root
-    group radio cache inet misc audio sdcard_r sdcard_rw qcom_diag diag log net_raw system
+    group radio cache inet misc audio sdcard_r sdcard_rw qcom_diag diag log readproc wakelock net_raw system
 
 service usb_uicc_enable /system/bin/sh /system/etc/init.qcom.uicc.sh
     class late_start

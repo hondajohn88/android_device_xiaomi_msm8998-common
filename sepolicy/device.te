@@ -1,2 +1,6 @@
 type sound_device, dev_type;
 type sysmatdrv_device, dev_type;
+type fpc_device, dev_type;
+type goodix_device, dev_type;
+type fpc_fpd_device, dev_type;
+type goodix_fpd_device, dev_type;

@@ -19,15 +19,18 @@
 
     <PreferenceCategory
         android:key="fp_key"
-        android:title="@string/fp_title" >
+        android:title="@string/fp_panel_title" 
+        android:summary="@string/fp_panel_summary">
 
         <SwitchPreference
             android:key="fp_home"
-            android:title="@string/fp_home_title"
-            android:summary="@string/fp_home_summary" />
+            android:defaultValue="true"
+            android:title="@string/fp_as_home_title"
+            android:summary="@string/fp_as_home_summary" />
 
         <SwitchPreference
             android:key="fp_wakeup"
+            android:defaultValue="true"
             android:title="@string/fp_wakeup_title"
             android:summary="@string/fp_wakeup_summary" />
 
@@ -36,17 +39,6 @@
             android:title="@string/fingerprint_pocketmode_title"
             android:summary="@string/fingerprint_pocketmode_summary"
             android:dependency="fp_wakeup" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="gestures_key"
-        android:title="@string/gestures_title" >
-
-        <SwitchPreference
-            android:key="dt2w"
-            android:title="@string/dt2w_title"
-            android:summary="@string/dt2w_summary" />
 
     </PreferenceCategory>
 

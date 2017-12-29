@@ -25,14 +25,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.cyanogenmod.settings.device.utils.DeviceKeyHandler;
-
 import com.cyanogenmod.settings.device.utils.FileUtils;
 
 public class KeyHandler implements DeviceKeyHandler {
 
     private static final String TAG = KeyHandler.class.getSimpleName();
-    private static final String VIRTUAL_KEYS_NODE = "/proc/touchpanel/capacitive_keys_enable";
+
     private static final String FP_HOME_NODE = "/sys/devices/soc/soc:fpc_fpc1020/enable_key_events";
+	public static final String VIRTUAL_KEYS_NODE = "/sys/devices/soc/soc:fingerprint_fpc/power/wakeup_active";
 
     private static boolean sScreenTurnedOn = true;
     private static final boolean DEBUG = false;
@@ -60,8 +60,7 @@ public class KeyHandler implements DeviceKeyHandler {
     }
 
     public boolean handleKeyEvent(KeyEvent event) {
-        boolean virtualKeysEnabled = FileUtils.isFileReadable(VIRTUAL_KEYS_NODE) &&
-                FileUtils.readOneLine(VIRTUAL_KEYS_NODE).equals("0");
+        boolean virtualKeysEnabled = FileUtils.readOneLine(VIRTUAL_KEYS_NODE).equals("0");
         boolean fingerprintHomeButtonEnabled = FileUtils.isFileReadable(FP_HOME_NODE) &&
                 FileUtils.readOneLine(FP_HOME_NODE).equals("1");
 
@@ -77,12 +76,12 @@ public class KeyHandler implements DeviceKeyHandler {
             if (event.getScanCode() == 102) {
                 if (DEBUG) Log.d(TAG, "Mechanical home button pressed");
                 return sScreenTurnedOn &&
-                        (virtualKeysEnabled || fingerprintHomeButtonEnabled);
+                        (virtualKeysEnabled || fingerprintHomeButtonEnabled) && sScreenTurnedOn;
             }
         }
         return false;
-    }
-
+      }
+   
     private boolean hasSetupCompleted() {
         return Settings.Secure.getInt(mContext.getContentResolver(),
                 Settings.Secure.USER_SETUP_COMPLETE, 0) != 0;
