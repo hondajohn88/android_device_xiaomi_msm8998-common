@@ -21,18 +21,18 @@
 
     <!-- All values are in mAh except as noted -->
     <item name="none">0</item>
-    <item name="screen.on">41.22</item>
-    <item name="screen.full">259.4</item>
-    <item name="bluetooth.active">8.09</item>
-    <item name="bluetooth.on">0.44</item>
+    <item name="screen.on">41.00</item>
+    <item name="screen.full">259.0</item>
+    <item name="bluetooth.active">8.00</item>
+    <item name="bluetooth.on">0.40</item>
     <item name="wifi.on">0.5</item>
     <item name="wifi.active">182.79</item>
     <item name="wifi.scan">40.69</item>
-    <item name="dsp.audio">18.46</item>
-    <item name="dsp.video">54.17</item>
+    <item name="dsp.audio">18.00</item>
+    <item name="dsp.video">54.00</item>
     <item name="camera.flashlight">160</item>
-    <item name="camera.avg">586</item>
-    <item name="gps.on">59.91</item>
+    <item name="camera.avg">575</item>
+    <item name="gps.on">59.00</item>
     <item name="radio.active">134.84</item>
     <item name="radio.scanning">10</item>
     <array name="radio.on">

@@ -1,6 +1,11 @@
+allow system_server proximity_device:chr_file { ioctl open read };
+allow priv_app device:dir { open read };
+allow isolated_app app_data_file:dir getattr;
+
 type sound_device, dev_type;
 type sysmatdrv_device, dev_type;
-type fpc_device, dev_type;
-type goodix_device, dev_type;
-type fpc_fpd_device, dev_type;
-type goodix_fpd_device, dev_type;
+type elliptic0, dev_type;
+type elliptic1, dev_type;
+type elliptic, dev_type;
+type elliptic_device, dev_type;
+type proximity_device, dev_type;

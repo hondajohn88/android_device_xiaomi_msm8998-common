@@ -78,7 +78,7 @@ char const*const PERSISTENCE_FILE
 
 #define RAMP_SIZE 25
 static int BRIGHTNESS_RAMP[RAMP_SIZE] = { 0, 0, 0, 0, 0, 0, 5, 10, 20, 30, 40, 30, 20, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-#define RAMP_STEP_DURATION 3000
+#define RAMP_STEP_DURATION 500
 
 #define DEFAULT_MAX_BRIGHTNESS 150
 int max_brightness;
@@ -284,8 +284,8 @@ static int set_speaker_light_locked(struct light_device_t* dev,
         break;
     case LIGHT_FLASH_NONE:
     default:
-        onMS = 30;
-        offMS = 10000;
+        onMS = 1000;
+        offMS = 0;
         break;
     }
 
@@ -302,7 +302,7 @@ static int set_speaker_light_locked(struct light_device_t* dev,
         pauseHi = onMS - (stepDuration * RAMP_SIZE * 2);
         if (stepDuration * RAMP_SIZE * 2 > onMS) {
             stepDuration = onMS / (RAMP_SIZE * 2);
-            pauseHi = 30;
+            pauseHi = 1000;
         }
 
         // white

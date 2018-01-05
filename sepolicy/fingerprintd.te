@@ -4,12 +4,9 @@ r_dir_file(fingerprintd, firmware_file)
 allow fingerprintd fingerprint_service:service_manager find;
 
 allow fingerprintd fingerprintd:netlink_socket { create bind read write };
-
 allow fingerprintd fpc_data_file:dir rw_dir_perms;
 allow fingerprintd fpc_data_file:file create_file_perms;
 allow fingerprintd fpc_data_file:sock_file { create unlink };
-allow fingerprintd fpc_fpd_device:chr_file rw_file_perms;
-allow fingerprintd fpc_fpd_device:chr_file { create setattr };
 allow fingerprintd goodix_data_file:dir rw_dir_perms;
 allow fingerprintd goodix_data_file:file create_file_perms;
 allow fingerprintd goodix_data_file:sock_file { create unlink };
@@ -17,11 +14,7 @@ allow fingerprintd goodix_fpd_device:chr_file rw_file_perms;
 allow fingerprintd goodix_fpd_device:chr_file { create setattr };
 allow fingerprintd sysfs_fpc:dir r_dir_perms;
 allow fingerprintd sysfs_fpc:file rw_file_perms;
-allow fingerprintd sysfs_goodix:dir r_dir_perms;
-allow fingerprintd sysfs_goodix:file rw_file_perms;
 allow fingerprintd sysmatdrv_device:chr_file w_file_perms;
-allow fingerprintd sysfs_fingerprint:dir { r_dir_perms };
-allow fingerprintd sysfs_fingerprint:file { rw_file_perms };
 allow fingerprintd tee_device:chr_file rw_file_perms;
 allow fingerprintd uhid_device:chr_file rw_file_perms;
 

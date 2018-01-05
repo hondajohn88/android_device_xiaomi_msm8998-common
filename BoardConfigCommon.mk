@@ -204,36 +204,22 @@ TARGET_POWERHAL_VARIANT := qcom
 # QCOM
 BOARD_USES_QCOM_HARDWARE := true
 BOARD_USES_QC_TIME_SERVICES := true
-TARGET_USE_SDCLANG := true
+
+ifneq ($(HOST_OS),darwin)
+SDCLANG := true
+SDCLANG_PATH := prebuilts/snapdragon-llvm-4.0.2/toolchains/Snapdragon_LLVM_4.0/prebuilt/linux-x86_64/bin
+endif
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(VENDOR_PATH)/rootdir/root/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 
-# TWRP specific build flags
-#TW_THEME := portrait_hdpi
-#RECOVERY_SDCARD_ON_DATA := true
-#BOARD_HAS_NO_REAL_SDCARD := true
-#TARGET_RECOVERY_QCOM_RTC_FIX := true
-#TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-#TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/soc/6a00000.ssusb/6a00000.dwc3/gadget/lun0/file"
-#TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
-#TW_MAX_BRIGHTNESS := 255
-#TW_DEFAULT_BRIGHTNESS := 153
-#TW_SCREEN_BLANK_ON_BOOT := true
-#TW_INCLUDE_NTFS_3G := true
-#TW_EXCLUDE_SUPERSU := true
-#TW_EXTRA_LANGUAGES := true
-#TW_INCLUDE_CRYPTO := true
-#TW_INPUT_BLACKLIST := "hbtp_vm"
-
 # Releasetools
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_xiaomi
 TARGET_RELEASETOOLS_EXTENSIONS := $(VENDOR_PATH)
 
 # RIL
-BOARD_RIL_CLASS := ../../../$(VENDOR_PATH)/ril
 PROTOBUF_SUPPORTED := true
 TARGET_RIL_VARIANT := caf
 
