@@ -37,7 +37,7 @@
 #define RAMP_STEP_MS    "ramp_step_ms"
 #define START_IDX       "start_idx"
 
-#define MAX_LED_BRIGHTNESS    255
+#define MAX_LED_BRIGHTNESS    155
 #define MAX_LCD_BRIGHTNESS    4095
 
 /*
@@ -113,6 +113,11 @@ static void handleButtons(Type /* type */, const LightState& state) {
     set(BUTTON_LED BRIGHTNESS, brightness);
     set(BUTTON1_LED BRIGHTNESS, brightness);
 }
+
+// static void handleBattery(Type /* type */, const LightState& state) {
+//   uint32_t brightness = getScaledBrightness(state, MAX_LED_BRIGHTNESS);
+//    set(BUTTON_LED BRIGHTNESS, brightness);
+//}
 
 /*
  * Scale each value of the brightness ramp according to the
