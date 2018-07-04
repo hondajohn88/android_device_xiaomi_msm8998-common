@@ -120,10 +120,6 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider@2.4-impl \
-    android.hardware.camera.provider@2.4-service \
-    camera.device@1.0-impl \
-    camera.device@3.2-impl \
     Snap
 
 PRODUCT_PACKAGES += \
@@ -139,7 +135,6 @@ PRODUCT_PACKAGES += \
     libbt-vendor
 
 PRODUCT_PACKAGES += \
-    android.hardware.bluetooth@1.0-impl \
     android.hardware.bluetooth@1.0-service
 
 # Connectivity Engine support (CNE)
@@ -175,8 +170,7 @@ PRODUCT_PACKAGES += \
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
-    android.hardware.drm@1.0-service \
-    android.hardware.drm@1.0-service.widevine
+    android.hardware.drm@1.0-service
 
 # Fingerprint sensor
 PRODUCT_PACKAGES += \
@@ -211,15 +205,13 @@ PRODUCT_COPY_FILES += \
 
 # Health
 PRODUCT_PACKAGES += \
-    android.hardware.health@1.0-convert \
     android.hardware.health@1.0-impl \
     android.hardware.health@1.0-service
 
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
-    android.hidl.manager@1.0 \
-    android.hidl.manager@1.0-java
+    android.hidl.manager@1.0
 
 # IMS
 PRODUCT_PACKAGES += \
@@ -258,7 +250,7 @@ PRODUCT_PACKAGES += \
 
 # LiveDisplay native
 PRODUCT_PACKAGES += \
-    libjni_livedisplay
+    vendor.lineage.livedisplay@1.0-service-sdm
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -288,23 +280,17 @@ PRODUCT_PACKAGES += \
     libnqp61-jcop-kit \
     NQNfcNci \
     nqnfcee_access.xml \
-    nqnfcse_access.xml \
     Tag
 
 PRODUCT_PACKAGES += \
     android.hardware.nfc@1.0-impl \
-    android.hardware.nfc@1.0-service \
     vendor.nxp.hardware.nfc@1.0-impl \
     vendor.nxp.hardware.nfc@1.0-service
-
 
 # NFC
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-brcm.conf \
     $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nxp.conf
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf
 
 # OMX
 PRODUCT_PACKAGES += \
@@ -393,12 +379,7 @@ PRODUCT_PACKAGES += \
 
 # Vibrator
 PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-impl \
-    android.hardware.vibrator@1.0-service
-
-# VNDK-SP:
-#PRODUCT_PACKAGES += \
-#    vndk-sp
+    android.hardware.vibrator@1.0-service.lineage
 
 # TextClassifier smart selection model files
 PRODUCT_PACKAGES += \
