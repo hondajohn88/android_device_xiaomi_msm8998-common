@@ -127,12 +127,8 @@ PRODUCT_PACKAGES += \
     Snap
 
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider@2.4-impl \
-    android.hardware.camera.provider@2.4-service \
     vendor.qti.hardware.camera.device@1.0 \
-    vendor.qti.hardware.camera.device@1.0_vendor \
-    camera.device@1.0-impl \
-    camera.device@3.2-impl
+    vendor.qti.hardware.camera.device@1.0_vendor
 
 # Bluetooth
 PRODUCT_PACKAGES += \
@@ -167,10 +163,6 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
     android.hardware.renderscript@1.0-impl
-
-# Doze
-PRODUCT_PACKAGES += \
-    Doze
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -277,23 +269,16 @@ PRODUCT_PACKAGES += \
     libandroid_net \
     netutils-wrapper-1.0
 
-# NFC
-PRODUCT_PACKAGES += \
-    com.android.nfc_extras \
-    com.gsma.services.nfc \
-    com.nxp.nfc.nq \
-    com.nxp.nfc.nq.xml \
-    libnqnfc-nci \
-    nfc_nci.nqx.default \
-    libnqp61-jcop-kit \
-    NQNfcNci \
-    nqnfcee_access.xml \
-    nqnfcse_access.xml \
-    Tag
-
+ # NFC
 PRODUCT_PACKAGES += \
     android.hardware.nfc@1.0-impl \
     android.hardware.nfc@1.0-service \
+    com.android.nfc_extras \
+    nfc_nci.msm8998 \
+    NfcNci \
+    Tag
+
+PRODUCT_PACKAGES += \
     vendor.nxp.hardware.nfc@1.0-impl \
     vendor.nxp.hardware.nfc@1.0-service
 
