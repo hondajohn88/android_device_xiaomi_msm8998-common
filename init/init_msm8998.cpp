@@ -35,7 +35,6 @@
 #include <android-base/strings.h>
 
 #include "property_service.h"
-#include "vendor_init.h"
 
 using android::base::GetProperty;
 using android::base::ReadFileToString;
