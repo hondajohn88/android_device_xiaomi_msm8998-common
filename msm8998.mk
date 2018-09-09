@@ -24,8 +24,6 @@ DEVICE_PACKAGE_OVERLAYS += \
 PRODUCT_ENFORCE_RRO_TARGETS := \
     framework-res
 
-PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += $(LOCAL_PATH)/overlay-custom
-
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
@@ -57,11 +55,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.host.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.vulkan.compute-0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.compute-0.xml \
     frameworks/native/data/etc/android.hardware.vulkan.level-0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.level.xml \
-    frameworks/native/data/etc/android.hardware.vulkan.version-1_1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.version.xml \
+    frameworks/native/data/etc/android.hardware.vulkan.version-1_0_3.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.version.xml \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.wifi.passpoint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.passpoint.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml \
-    frameworks/native/data/etc/android.software.device_id_attestation.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_id_attestation.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/com.android.nfc_extras.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/com.android.nfc_extras.xml \
@@ -98,15 +95,16 @@ PRODUCT_PACKAGES += \
     libvolumelistener \
 
 PRODUCT_PACKAGES += \
-    android.hardware.audio.effect@4.0-impl \
-    android.hardware.audio@4.0-impl \
+    android.hardware.audio.effect@2.0-impl \
+    android.hardware.audio@2.0-impl \
     android.hardware.audio@2.0-service \
-    android.hardware.soundtrigger@2.1-impl
+    android.hardware.soundtrigger@2.0-impl
 
 PRODUCT_PACKAGES += \
     tinymix
 
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
     $(LOCAL_PATH)/configs/audio/audio_output_policy.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio_output_policy.conf \
     $(LOCAL_PATH)/configs/audio/audio_platform_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_platform_info.xml \
     $(LOCAL_PATH)/configs/audio/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
@@ -127,12 +125,15 @@ PRODUCT_PACKAGES += \
     Snap
 
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider@2.4-impl \
+    android.hardware.camera.provider@2.4-impl:32 \
     android.hardware.camera.provider@2.4-service
 
 # Bluetooth
 PRODUCT_PACKAGES += \
     libbt-vendor
+
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-service
 
 # Display
 PRODUCT_PACKAGES += \
@@ -160,9 +161,6 @@ PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-service
 
 # Fingerprint sensor
-PRODUCT_PACKAGES += \
-    libpowermanager.vendor
-
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1-service.xiaomi_msm8998
 
@@ -194,8 +192,8 @@ PRODUCT_COPY_FILES += \
 
 # Health
 PRODUCT_PACKAGES += \
-    android.hardware.health@2.0-service \
-    chargeonlymode
+    android.hardware.health@1.0-impl \
+    android.hardware.health@1.0-service
 
 # HIDL
 PRODUCT_PACKAGES += \
@@ -244,15 +242,17 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
+    com.android.nfc_extras \
+    nfc_nci.msm8998 \
     NfcNci \
-    Tag \
-    android.hardware.nfc@1.1-service
+    Tag
 
 PRODUCT_PACKAGES += \
-    SecureElement
+    android.hardware.nfc@1.0-impl \
+    android.hardware.nfc@1.0-service
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf \
+    $(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-brcm.conf \
     $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nxp.conf
 
 # OMX
@@ -270,10 +270,7 @@ PRODUCT_PACKAGES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.1-service.xiaomi_msm8998
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
+    android.hardware.power@1.1-service-qti
 
 # Properties
 include $(LOCAL_PATH)/vendor_prop.mk
@@ -294,7 +291,6 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     init.recovery.qcom.rc \
     init.target.rc \
-    init.target.performance.rc \
     ueventd.qcom.rc
 
 PRODUCT_PACKAGES += \
@@ -315,6 +311,7 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
+    libril-wrapper \
     librmnetctl
 
 # Seccomp policy
@@ -327,6 +324,13 @@ PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
     android.hardware.sensors@1.0-service
 
+# Telephony
+PRODUCT_PACKAGES += \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += \
+    telephony-ext
+
 # USB
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
@@ -338,10 +342,7 @@ PRODUCT_PACKAGES += \
 
 # VNDK
 PRODUCT_PACKAGES += \
-    vndk-sp
-
-PRODUCT_COPY_FILES += \
-    prebuilts/vndk/v27/arm64/arch-arm64-armv8-a/shared/vndk-core/android.hardware.gnss@1.0.so:vendor/lib64/android.hardware.gnss@1.0-v27.so
+    vndk_package
 
 # TextClassifier smart selection model files
 PRODUCT_PACKAGES += \
@@ -349,6 +350,8 @@ PRODUCT_PACKAGES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
+    ipacm \
+    IPACM_cfg.xml \
     libwpa_client \
     hostapd \
     readmac \

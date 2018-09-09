@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
+Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -574,8 +574,8 @@ int IPACM_Config::CheckNatIfaces(const char *dev_name, ipa_ip_type ip_type)
 			if (ip_type == IPA_IP_v6 && pNatIfaces[i].v6_up == true)
 			{
 				IPACMDBG_H(" v6_up=%d\n", pNatIfaces[i].v6_up);
-				return 0;
-			}
+			return 0;
+		}
 			return -1;
 		}
 	}

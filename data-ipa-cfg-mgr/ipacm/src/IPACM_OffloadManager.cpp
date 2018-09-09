@@ -215,6 +215,7 @@ RET IPACM_OffloadManager::addDownstream(const char * downstream_name, const Pref
 		IPACMERR("fail to get iface index.\n");
 		return FAIL_INPUT_CHECK;
 	}
+
 	/* Iface is valid, add to list if not present */
 	if (std::find(valid_ifaces.begin(), valid_ifaces.end(), std::string(downstream_name)) == valid_ifaces.end())
 	{

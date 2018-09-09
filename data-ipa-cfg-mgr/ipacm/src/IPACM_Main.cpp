@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -847,7 +847,6 @@ int main(int argc, char **argv)
 
 	neigh = new IPACM_Neighbor();
 	ifacemgr = new IPACM_IfaceManager();
-
 #ifdef FEATURE_IPACM_HAL
 	OffloadMng = IPACM_OffloadManager::GetInstance();
 	hal = HAL::makeIPAHAL(1, OffloadMng);

@@ -195,7 +195,7 @@ IPACM_Lan::IPACM_Lan(int iface_index) : IPACM_Iface(iface_index)
 #ifdef FEATURE_IPACM_HAL
 
 		/* check if Upstream was set before as WIFI with RNDIS case */
-		if(ipa_if_cate == LAN_IF && IPACM_Wan::backhaul_is_sta_mode == true)  /* STA */
+		if(ipa_if_cate == LAN_IF && IPACM_Wan::backhaul_is_sta_mode == true)  /* LTE */
 		{
 			IPACMDBG_H(" Skip the Upstream flag set on LAN instance (%d) with WIFI backhaul (%d)\n", ipa_if_cate, IPACM_Wan::backhaul_is_sta_mode ); /* RNDIS+WIFI not support on msm*/
 			return;
@@ -522,7 +522,7 @@ void IPACM_Lan::event_callback(ipa_cm_event_id event, void *param)
 			IPACMERR("IPA_HANDLE_WAN_UP_TETHER tether_if(%d), not valid (%d) ignore\n", data_wan_tether->if_index_tether, ipa_if_num);
 			return;
 		}
-#else /* not offload rndis on WIFI mode on MSM targets sky*/
+#else /* not offload rndis on WIFI mode on MSM targets */
 		if (data_wan_tether->is_sta)
 		{
 			IPACMERR("Not support RNDIS offload on WIFI mode, dun install UL filter rules for WIFI mode\n");
@@ -926,7 +926,7 @@ void IPACM_Lan::event_callback(ipa_cm_event_id event, void *param)
 				}
 			}
 
-			if (ipa_interface_index == ipa_if_num 
+			if (ipa_interface_index == ipa_if_num
 #ifdef FEATURE_L2TP
 				|| is_vlan_event(data->iface_name) ||
 				|| (is_l2tp_event(data->iface_name) && ipa_if_cate == ODU_IF)
@@ -4400,7 +4400,7 @@ void IPACM_Lan::eth_bridge_post_event(ipa_cm_event_id evt, ipa_ip_type iptype, u
 	if(ipv6_addr)
 	{
 		IPACMDBG_H("IPv6 addr: %08x:%08x:%08x:%08x \n", ipv6_addr[0],
-		ipv6_addr[1], ipv6_addr[2], ipv6_addr[3]);
+			ipv6_addr[1], ipv6_addr[2], ipv6_addr[3]);
 	}
 	memset(&eth_bridge_evt, 0, sizeof(ipacm_cmd_q_data));
 	eth_bridge_evt.event = evt;

@@ -46,9 +46,9 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 typedef struct
 {
-	char iface_name[IPA_IFACE_NAME_LEN];
-	bool v4_up;
-	bool v6_up;
+  char iface_name[IPA_IFACE_NAME_LEN];
+  bool v4_up;
+  bool v6_up;
 }NatIfaces;
 
 /* for IPACM rm dependency use*/

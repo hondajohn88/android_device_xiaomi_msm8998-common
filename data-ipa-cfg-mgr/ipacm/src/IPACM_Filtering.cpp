@@ -144,7 +144,7 @@ bool IPACM_Filtering::AddFilteringRuleAfter(struct ipa_ioc_add_flt_rule_after co
 	IPACMDBG("Added Filtering rule %pK\n", ruleTable);
 #else
 	if (ruleTable)
-		IPACMERR("Not support adding Filtering rule %pK\n", ruleTable);
+	IPACMERR("Not support adding Filtering rule %pK\n", ruleTable);
 #endif
 	return true;
 }

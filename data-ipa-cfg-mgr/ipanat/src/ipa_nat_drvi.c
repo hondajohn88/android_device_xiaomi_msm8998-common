@@ -45,7 +45,6 @@ static size_t strlcpy(char * dst, const char * src, size_t size) {
 #endif
 #endif
 
-
 struct ipa_nat_cache ipv4_nat_cache;
 pthread_mutex_t nat_mutex    = PTHREAD_MUTEX_INITIALIZER;
 
