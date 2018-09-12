@@ -73,20 +73,9 @@ CAMERA2_SENSOR_MODULES="$COMMON_BLOB_ROOT"/vendor/lib/libmmcamera2_sensor_module
 sed -i "s|/system/etc/camera/|/vendor/etc/camera/|g" "$CAMERA2_SENSOR_MODULES"
 
 #
-# Replace libminikin.so with libcamshim.so to allow shimming
-#
-CAMERA_MSM8998="$COMMON_BLOB_ROOT"/vendor/lib/hw/camera.msm8998.so
-sed -i "s|libminikin.so|libcamshim.so|g" "$CAMERA_MSM8998"
-
-#
-# Use updated libicuuc methods in libMiCameraHal
-#
-MI_CAMERA_HAL="$COMMON_BLOB_ROOT"/vendor/lib/libMiCameraHal.so
-sed -i "s|_ZN6icu_58|_ZN6icu_60|g" "$MI_CAMERA_HAL"
-
-#
 # Load camera watermark from vendor
 #
+MI_CAMERA_HAL="$COMMON_BLOB_ROOT"/vendor/lib/libMiCameraHal.so
 sed -i "s|system/etc/dualcamera.png|vendor/etc/dualcamera.png|g" "$MI_CAMERA_HAL"
 
 #
@@ -123,5 +112,20 @@ patchelf --replace-needed android.hardware.gnss@1.0.so android.hardware.gnss@1.0
 #
 DPLMEDIA="$COMMON_BLOB_ROOT"/vendor/lib64/lib-dplmedia.so
 patchelf --remove-needed libmedia.so "$DPLMEDIA"
+
+#
+# Replace libicuuc.so with libicuuc-v27.so for libMiCameraHal.so
+#
+ICUUC_V27="$COMMON_BLOB_ROOT"/vendor/lib/libicuuc-v27.so
+patchelf --replace-needed libicuuc.so libicuuc-v27.so "$MI_CAMERA_HAL"
+patchelf --set-soname libicuuc-v27.so "$ICUUC_V27"
+
+#
+# Replace libminikin.so with libminikin-v27.so for camera.msm8998.so
+#
+CAMERA_MSM8998="$COMMON_BLOB_ROOT"/vendor/lib/hw/camera.msm8998.so
+MINIKIN_V27="$COMMON_BLOB_ROOT"/vendor/lib/libminikin-v27.so
+patchelf --replace-needed libminikin.so libminikin-v27.so "$CAMERA_MSM8998"
+patchelf --set-soname libminikin-v27.so "$MINIKIN_V27"
 
 "$MY_DIR"/setup-makefiles.sh

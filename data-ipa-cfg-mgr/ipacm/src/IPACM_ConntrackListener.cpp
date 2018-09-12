@@ -373,7 +373,7 @@ void IPACM_ConntrackListener::TriggerWANUp(void *in_param)
 
 	 if(nat_inst != NULL)
 	 {
-		 nat_inst->AddTable(wanup_data->ipv4_addr);
+		 nat_inst->AddTable(wanup_data->ipv4_addr, wanup_data->mux_id);
 	 }
 
 	 IPACMDBG("creating nat threads\n");

@@ -64,6 +64,7 @@ using ::android::hardware::tetheroffload::control::V1_0::IOffloadControl;
 
 using ::android::hardware::tetheroffload::control::V1_0::ITetheringOffloadCallback;
 
+#define KERNEL_PAGE 4096
 
 class HAL : public IOffloadControl, IOffloadConfig {
 public:

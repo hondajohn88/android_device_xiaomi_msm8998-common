@@ -69,9 +69,10 @@ lib64/libaptXHD_encoder.so|90f47f10af28b3ead143200cb4370b847c513127
 lib64/libaptX_encoder.so|0cebad28afcf29f931bdc2d24fce2730dc882ecf
 
 # Camera
-vendor/lib/libcamshim.so|e8a4cdaa62bfc90a633bf3fb60d904775f89b08b
-vendor/lib/libskia.so|3d2c5fa3b810a902e0d9915dec37502d48ea5105
 lib/libMiCameraHal.so:vendor/lib/libMiCameraHal.so
+lib/libicuuc.so:vendor/lib/libicuuc-v27.so
+lib/libminikin.so:vendor/lib/libminikin-v27.so
+lib/libskia.so:vendor/lib/libskia.so
 lib/libtrueportrait.so:vendor/lib/libtrueportrait.so
 lib64/libblurbuster.so
 lib64/libhazebuster.so
@@ -239,6 +240,39 @@ vendor/lib/libmmcamera_isp_sub_module.so
 # Camera OIS
 vendor/lib/libois_bu63164.so
 
+# Camera MIUI
+-priv-app/MiuiCamera/MiuiCamera.apk|eb61f7548799480bc43d43345daa8d551162040f
+etc/default-permissions/miuicamera-permissions.xml|ccbb54169bf223c00e6628df6c061533e76fbce9
+lib/libCameraEffectJNI.so
+lib/libblurbuster.so
+lib/libfiltergenerator.so
+lib/libjni_blurbuster.so
+lib/libjni_chromaflash.so
+lib/libjni_dualcamera.so
+lib/libjni_filtergenerator.so
+lib/libjni_hazebuster.so
+lib/libjni_makeupV2.so
+lib/libjni_optizoom.so
+lib/libjni_seestraight.so
+lib/libjni_sharpshooter.so
+lib/libjni_stillmore.so
+lib/libjni_trueportrait.so
+lib/libjni_truescanner_v2.so
+lib/libjni_ubifocus.so
+lib/libmorpho_group_portrait.so
+lib/libmorpho_groupshot.so
+lib/libmorpho_memory_allocator.so
+lib/libmorpho_panorama.so
+lib/libmorpho_panorama_gp.so
+lib/libseestraight.so
+lib/libtruescanner.so
+lib64/libCameraEffectJNI.so
+lib64/libmorpho_group_portrait.so
+lib64/libmorpho_groupshot.so
+lib64/libmorpho_memory_allocator.so
+lib64/libmorpho_panorama.so
+lib64/libmorpho_panorama_gp.so
+
 # Charger
 vendor/bin/hvdcp_opti
 
@@ -255,14 +289,6 @@ vendor/lib64/libcneoplookup.so
 vendor/lib64/libwms.so
 vendor/lib64/libwqe.so
 vendor/lib64/libxml.so
-
-# Display postprocessing
--vendor/lib/libsdm-disp-vndapis.so
-vendor/lib64/libsdm-color.so
-vendor/lib64/libsdm-diag.so
--vendor/lib64/libsdm-disp-vndapis.so
-vendor/lib64/libsdmextension.so
-vendor/lib64/libtinyxml2_1.so
 
 # DPM
 vendor/bin/dpmQmiMgr
@@ -317,7 +343,6 @@ vendor/lib/egl/libGLESv1_CM_adreno.so
 vendor/lib/egl/libGLESv2_adreno.so
 vendor/lib/egl/libq3dtools_adreno.so
 vendor/lib/egl/libQTapGLES.so
-vendor/lib/hw/vulkan.msm8998.so
 vendor/lib/libadreno_utils.so
 vendor/lib/libbccQTI.so
 vendor/lib/libC2D2.so
@@ -329,7 +354,6 @@ vendor/lib/libllvm-glnext.so
 vendor/lib/libllvm-qcom.so
 vendor/lib/libllvm-qgl.so
 vendor/lib/libOpenCL.so
-vendor/lib/libqseed3.so
 vendor/lib/librs_adreno.so
 vendor/lib/librs_adreno_sha1.so
 vendor/lib/libRSDriver_adreno.so
@@ -340,7 +364,6 @@ vendor/lib64/egl/libGLESv2_adreno.so
 vendor/lib64/egl/libq3dtools_adreno.so
 vendor/lib64/egl/libq3dtools_esx.so
 vendor/lib64/egl/libQTapGLES.so
-vendor/lib64/hw/vulkan.msm8998.so
 vendor/lib64/libadreno_utils.so
 vendor/lib64/libbccQTI.so
 vendor/lib64/libC2D2.so
@@ -352,10 +375,23 @@ vendor/lib64/libllvm-glnext.so
 vendor/lib64/libllvm-qcom.so
 vendor/lib64/libllvm-qgl.so
 vendor/lib64/libOpenCL.so
-vendor/lib64/libqseed3.so
 vendor/lib64/librs_adreno.so
 vendor/lib64/librs_adreno_sha1.so
 vendor/lib64/libRSDriver_adreno.so
+
+# Graphics (SDM) - from LA.UM.7.2.r1-03600-sdm660.0
+vendor/lib/libqseed3.so|e29a10228dfd0cceee2e0ac59c27535d8e87db92
+-vendor/lib/libsdm-disp-vndapis.so|66477d2b02a21c14dd734f6ad6dbfbe03ebfc52c
+vendor/lib64/libqseed3.so|d23c424bf8e5530049562c7e1d5d3cbda20ca79e
+vendor/lib64/libsdm-color.so|ceeb85c8e8c4f9eeb8a0b7e85869eac35bc4b9dc
+vendor/lib64/libsdm-diag.so|db8ca0ea417991ba22e8e7919d918d0a6b908ab3
+-vendor/lib64/libsdm-disp-vndapis.so|7dd94cb4409a987761d0c5b0c0c977e24c548d74
+vendor/lib64/libsdmextension.so|79fc5ce1b3bd237eb60d9d508353acd6f6728998
+vendor/lib64/libtinyxml2_1.so|eae7c0526a56300dad04bce1a4e154a5869b3542
+
+# Graphics (Vulkan) - from taimen PPR1.180610.009
+vendor/lib/hw/vulkan.msm8998.so|f3655d2759ef626e3f1a2e8b0634300c4b6bab75
+vendor/lib64/hw/vulkan.msm8998.so|b34ac6144505c1763b40044e249b2dca3555f73d
 
 # Graphics firmware
 vendor/firmware/a530_pfp.fw
@@ -368,7 +404,7 @@ vendor/firmware/a540_zap.elf
 vendor/firmware/a540_zap.mdt
 
 # IMS
--app/ims/ims.apk|57afae935238ea6366c6fae302ab3fe573793e54
+-app/ims/ims.apk|7e8415c27cd21b1951b4dd040c41de69d6f8b71a
 -app/uceShimService/uceShimService.apk
 etc/permissions/qti-vzw-ims-internal.xml:vendor/etc/permissions/qti-vzw-ims-internal.xml
 lib64/libdiag_system.so
@@ -430,11 +466,9 @@ vendor/lib/libvqzip.so
 vendor/lib/libpn553_fw.so|d032117e6645395327a5acd236bfd1bec56569c0
 
 # Perf
-vendor/bin/perfd|4ffa9d634fae4f5775a7b0b246eca3a4fba0eacb
 vendor/etc/perf-profile0.conf|02204355bf29ceb0460cd53e6716552bb9d9b05f
-vendor/lib/libqti-perfd-client.so|fe671eb9cc05128f88a2acdaf0fbd28a1f354080
-vendor/lib64/libqti-perfd-client.so|aa4ce14b9f6cd3a0a00d3235f7155aa90825749f
-vendor/lib64/libqti-util.so|587254cef89359718fbd89c8dc56f41e087c075c
+vendor/lib/libqti-perfd-client.so|f277daf9632b4d4c22a27abec2c4d0ccf776892d
+vendor/lib64/libqti-perfd-client.so|eaf678de5d7d0de194a263db1835b1f582452419
 
 # Peripheral manager
 vendor/bin/pm-proxy
