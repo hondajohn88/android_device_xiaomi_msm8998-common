@@ -1,8 +1,10 @@
+# CNE
+/data/connectivity(/.*)?                                      u:object_r:cnd_old_data_file:s0
+
 # Fingerprint
 /(vendor|system/vendor)/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.1-service\.xiaomi_msm8998 u:object_r:hal_fingerprint_default_exec:s0
 /dev/goodix_fp                                                u:object_r:fingerprint_device:s0
-/data/vendor/fpc(/.*)?                                        u:object_r:fingerprint_data_file:s0
-/data/vendor/goodix(/.*)?                                     u:object_r:fingerprint_data_file:s0
+/data/misc/fpc(/.*)?                                          u:object_r:fingerprint_data_file:s0
 /data/misc/gf_data(/.*)?                                      u:object_r:fingerprint_data_file:s0
 /data/misc/goodix(/.*)?                                       u:object_r:fingerprint_data_file:s0
 /persist/fpc(/.*)?                                            u:object_r:fingerprint_persist_file:s0
@@ -18,8 +20,14 @@
 # Light HAL
 /(vendor|system/vendor)/bin/hw/android\.hardware\.light@2\.0-service\.xiaomi_msm8998 u:object_r:hal_light_default_exec:s0
 
+# Perfd
+/dev/socket/perfd                                             u:object_r:perfd_socket:s0
+/(vendor|system/vendor)/bin/perfd                             u:object_r:perfd_exec:s0
+
 # Power HAL
+/(vendor|system/vendor)/bin/hw/android\.hardware\.power@1\.2-service.xiaomi_msm8998-libperfmgr u:object_r:hal_power_default_exec:s0
 /sys/devices/soc/c179000\.i2c/i2c-5/5-[0-9a-f]+/input/input[0-9]+/double_tap_enable u:object_r:sysfs_touchpanel:s0
+/sys/kernel/debug/system_stats    u:object_r:system_stats:s0
 
 # Readmac
 /(vendor|system/vendor)/bin/readmac                           u:object_r:readmac_exec:s0
