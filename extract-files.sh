@@ -22,9 +22,9 @@ set -e
 MY_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
-LINEAGE_ROOT="$MY_DIR"/../../..
+ABC_ROOT="$MY_DIR"/../../..
 
-HELPER="$LINEAGE_ROOT"/vendor/lineage/build/tools/extract_utils.sh
+HELPER="$ABC_ROOT"/scripts/tools/extract_utils.sh
 if [ ! -f "$HELPER" ]; then
     echo "Unable to find helper script at $HELPER"
     exit 1
@@ -53,18 +53,18 @@ if [ -z "$SRC" ]; then
 fi
 
 # Initialize the helper for common device
-setup_vendor "$DEVICE_COMMON" "$VENDOR" "$LINEAGE_ROOT" true "$CLEAN_VENDOR"
+setup_vendor "$DEVICE_COMMON" "$VENDOR" "$ABC_ROOT" true "$CLEAN_VENDOR"
 
 extract "$MY_DIR"/proprietary-files.txt "$SRC" "$SECTION"
 
 if [ -s "$MY_DIR"/../$DEVICE/proprietary-files.txt ]; then
     # Reinitialize the helper for device
-    setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false "$CLEAN_VENDOR"
+    setup_vendor "$DEVICE" "$VENDOR" "$ABC_ROOT" false "$CLEAN_VENDOR"
 
     extract "$MY_DIR"/../$DEVICE/proprietary-files.txt "$SRC" "$SECTION"
 fi
 
-COMMON_BLOB_ROOT="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE_COMMON"/proprietary
+COMMON_BLOB_ROOT="$ABC_ROOT"/vendor/"$VENDOR"/"$DEVICE_COMMON"/proprietary
 
 #
 # Load camera configs from vendor
@@ -73,16 +73,16 @@ CAMERA2_SENSOR_MODULES="$COMMON_BLOB_ROOT"/vendor/lib/libmmcamera2_sensor_module
 sed -i "s|/system/etc/camera/|/vendor/etc/camera/|g" "$CAMERA2_SENSOR_MODULES"
 
 #
-# Replace libminikin.so with libcamshim.so to allow shimming
-#
-CAMERA_MSM8998="$COMMON_BLOB_ROOT"/vendor/lib/hw/camera.msm8998.so
-sed -i "s|libminikin.so|libcamshim.so|g" "$CAMERA_MSM8998"
-
-#
 # Load camera watermark from vendor
 #
 MI_CAMERA_HAL="$COMMON_BLOB_ROOT"/vendor/lib/libMiCameraHal.so
 sed -i "s|system/etc/dualcamera.png|vendor/etc/dualcamera.png|g" "$MI_CAMERA_HAL"
+
+#
+# Remove unused libcamera_client.so dependency in libsac.so
+#
+SAC="$COMMON_BLOB_ROOT"/vendor/lib/libsac.so
+patchelf --remove-needed libcamera_client.so "$SAC"
 
 #
 # Correct VZW IMS library location
@@ -101,5 +101,31 @@ sed -i "s|/system/framework/qcrilhook.jar|/vendor/framework/qcrilhook.jar|g" "$Q
 #
 QTI_LIBPERMISSIONS="$COMMON_BLOB_ROOT"/vendor/etc/permissions/qti_libpermissions.xml
 sed -i "s|name=\"android.hidl.manager-V1.0-java|name=\"android.hidl.manager@1.0-java|g" "$QTI_LIBPERMISSIONS"
+
+#
+# Treble sucks
+#
+patchelf --replace-needed android.hardware.gnss@1.0.so android.hardware.gnss@1.0-v27.so $COMMON_BLOB_ROOT/vendor/lib64/vendor.qti.gnss@1.0_vendor.so
+
+#
+# Remove unused libmedia.so dependency in the IMS stack
+#
+DPLMEDIA="$COMMON_BLOB_ROOT"/vendor/lib64/lib-dplmedia.so
+patchelf --remove-needed libmedia.so "$DPLMEDIA"
+
+#
+# Replace libicuuc.so with libicuuc-v27.so for libMiCameraHal.so
+#
+ICUUC_V27="$COMMON_BLOB_ROOT"/vendor/lib/libicuuc-v27.so
+patchelf --replace-needed libicuuc.so libicuuc-v27.so "$MI_CAMERA_HAL"
+patchelf --set-soname libicuuc-v27.so "$ICUUC_V27"
+
+#
+# Replace libminikin.so with libminikin-v27.so for camera.msm8998.so
+#
+CAMERA_MSM8998="$COMMON_BLOB_ROOT"/vendor/lib/hw/camera.msm8998.so
+MINIKIN_V27="$COMMON_BLOB_ROOT"/vendor/lib/libminikin-v27.so
+patchelf --replace-needed libminikin.so libminikin-v27.so "$CAMERA_MSM8998"
+patchelf --set-soname libminikin-v27.so "$MINIKIN_V27"
 
 "$MY_DIR"/setup-makefiles.sh

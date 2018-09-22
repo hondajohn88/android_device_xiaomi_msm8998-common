@@ -52,6 +52,14 @@ LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)/init/hw
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE       := init.target.performance.rc
+LOCAL_MODULE_TAGS  := optional eng
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES    := etc/init.target.performance.rc
+LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)/init/hw
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE       := init.qcom.post_boot.sh
 LOCAL_MODULE_TAGS  := optional eng
 LOCAL_MODULE_CLASS := EXECUTABLES
@@ -73,4 +81,16 @@ LOCAL_MODULE_TAGS  := optional eng
 LOCAL_MODULE_CLASS := ETC
 LOCAL_SRC_FILES    := bin/init.panel_info.sh
 LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_EXECUTABLES)
+include $(BUILD_PREBUILT)
+
+# Offmode charging
+include $(CLEAR_VARS)
+LOCAL_MODULE          := chargeonlymode
+LOCAL_MODULE_OWNER    := xiaomi
+LOCAL_MODULE_PATH     := $(TARGET_ROOT_OUT_SBIN)
+LOCAL_UNSTRIPPED_PATH := $(TARGET_ROOT_OUT_SBIN_UNSTRIPPED)
+LOCAL_SRC_FILES       := sbin/chargeonlymode
+LOCAL_OVERRIDES_PACKAGES := charger
+LOCAL_MODULE_TAGS     := optional
+LOCAL_MODULE_CLASS    := EXECUTABLES
 include $(BUILD_PREBUILT)
