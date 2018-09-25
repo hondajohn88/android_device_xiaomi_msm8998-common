@@ -12,3 +12,5 @@ type thermal_prop, property_type;
 
 # Power
 type power_prop, property_type;
+
+type system_panel_prop, property_type;

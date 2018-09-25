@@ -133,9 +133,11 @@
 /dev/peel_ir              0660   system     system
 
 # Elliptic
-/dev/elliptic0            0660   system     system
-/dev/elliptic1            0660   system     system
-/dev/i2c-10               0660   system     system
+/dev/elliptic0            0777   system     system
+/dev/elliptic1            0777   system     system
+/dev/i2c-10               0777   system     system
+/dev/binder               0777   system     system
+/dev/binder/tmpfs         0777   system     system
 
 # Amplifier
 /dev/tiload_node          0660   system     system

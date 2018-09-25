@@ -1,2 +1,8 @@
 # Fingerprint
 type fingerprint_device, dev_type;
+
+# Proximity
+type proximity_device, dev_type;
+type sound_device, dev_type;
+
+type sysmatdrv_device, dev_type;

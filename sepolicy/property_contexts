@@ -29,5 +29,8 @@ persist.sys.thermal.                                          u:object_r:thermal
 sys.thermal.                                                  u:object_r:thermal_prop:s0
 
 # Power
-vendor.powerhal.state      u:object_r:power_prop:s0
-vendor.powerhal.audio      u:object_r:power_prop:s0
+vendor.powerhal.state                                         u:object_r:power_prop:s0
+vendor.powerhal.audio                                         u:object_r:power_prop:s0
+
+service.soundcard.                                            u:object_r:audio_prop:s0
+audio.                                                        u:object_r:audio_prop:s0

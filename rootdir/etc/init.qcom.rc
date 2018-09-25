@@ -118,6 +118,10 @@ on post-fs-data
 
     setprop vold.post_fs_data_done 1
 
+    #Elliptic
+    chown /dev/binder
+    chmod 777 /dev/binder
+
     # Create perfd related dirs
     mkdir /data/system/perfd 0770 root system
     chmod 2770 /data/system/perfd

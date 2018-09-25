@@ -1,6 +1,15 @@
+allow system_server persist_file:file r_file_perms;
+
 # Fingerprint
 allow system_server fingerprint_sysfs:file rw_file_perms;
 
 # Input devices
 r_dir_file(system_server, idc_file);
 r_dir_file(system_server, keylayout_file);
+
+# Proximity
+#allow system_server proximity_device:chr_file rw_file_perms;
+allow system_server sound_device:chr_file rw_file_perms;
+
+dontaudit system_server dalvikcache_data_file:file { execute write };
+allow system_server sysfs_input:file write;
