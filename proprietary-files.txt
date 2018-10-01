@@ -48,25 +48,25 @@ vendor/lib/soundfx/libshoebox.so
 
 # Bluetooth
 vendor/bin/hw/android.hardware.bluetooth@1.0-service-qti
-vendor/bin/wcnss_filter
 vendor/etc/init/android.hardware.bluetooth@1.0-service-qti.rc
 vendor/lib64/hw/android.hardware.bluetooth@1.0-impl-qti.so
 vendor/lib64/libbtnv.so
 
-# Bluetooth ANT
--lib/libantradio.so
-lib64/com.qualcomm.qti.ant@1.0.so
--lib64/libantradio.so
+# Bluetooth ANT+ (system) - from enchilada - PKQ1.180716.001
+-lib/libantradio.so|7506f2577f2f1068688b623ca85e432be9c3dac9
+lib64/com.qualcomm.qti.ant@1.0.so|199481b290856fb63f5c5bf6def426b43309becb
+-lib64/libantradio.so|fb958cb68c99c71455f969afdf96225f5110f0df
+
+# Bluetooth ANT+ (vendor)
 vendor/lib64/com.qualcomm.qti.ant@1.0_vendor.so
 vendor/lib64/hw/com.qualcomm.qti.ant@1.0-impl.so
-
-# Bluetooth FM
-vendor/lib64/hw/vendor.qti.hardware.fm@1.0-impl.so
-vendor/lib64/vendor.qti.hardware.fm@1.0_vendor.so
 
 # Bluetooth aptX (wahoo)
 lib64/libaptXHD_encoder.so|90f47f10af28b3ead143200cb4370b847c513127
 lib64/libaptX_encoder.so|0cebad28afcf29f931bdc2d24fce2730dc882ecf
+
+# Bluetooth FM
+vendor/lib64/vendor.qti.hardware.fm@1.0_vendor.so
 
 # Camera
 lib/libMiCameraHal.so:vendor/lib/libMiCameraHal.so
@@ -241,8 +241,6 @@ vendor/lib/libmmcamera_isp_sub_module.so
 vendor/lib/libois_bu63164.so
 
 # Camera MIUI
--priv-app/MiuiCamera/MiuiCamera.apk|eb61f7548799480bc43d43345daa8d551162040f
-etc/default-permissions/miuicamera-permissions.xml|ccbb54169bf223c00e6628df6c061533e76fbce9
 lib/libCameraEffectJNI.so
 lib/libblurbuster.so
 lib/libfiltergenerator.so
@@ -277,7 +275,7 @@ lib64/libmorpho_panorama_gp.so
 vendor/bin/hvdcp_opti
 
 # CNE
--priv-app/CNEService/CNEService.apk
+-priv-app/CNEService/CNEService.apk|cd015cf0e96e4fe3c62f840131f5af890f453d65
 vendor/bin/cnd
 vendor/lib64/com.quicinc.cne.api@1.0.so
 vendor/lib64/com.quicinc.cne.constants@1.0.so
@@ -310,84 +308,83 @@ vendor/lib64/libssd.so
 # Gatekeeper
 vendor/lib64/hw/gatekeeper.msm8998.so
 
-# GPS
-vendor/bin/hw/vendor.qti.gnss@1.0-service
-vendor/bin/loc_launcher
-vendor/bin/lowi-server
-vendor/bin/xtra-daemon
-vendor/etc/init/vendor.qti.gnss@1.0-service.rc
-vendor/lib64/hw/vendor.qti.gnss@1.0-impl.so
-vendor/lib64/libdataitems.so
-vendor/lib64/libDRPlugin.so
-vendor/lib64/libdrplugin_client.so
-vendor/lib64/libevent_observer.so
-vendor/lib64/libflp.so
-vendor/lib64/libgeofence.so
-vendor/lib64/libizat_client_api.so
-vendor/lib64/libizat_core.so
-vendor/lib64/liblbs_core.so
-vendor/lib64/libloc_api_v02.so
-vendor/lib64/libloc_ds_api.so
-vendor/lib64/liblocationservice.so
-vendor/lib64/liblocationservice_glue.so
-vendor/lib64/liblowi_client.so
-vendor/lib64/libulp2.so
-vendor/lib64/libxtadapter.so
-vendor/lib64/libxtwifi_ulp_adaptor.so
-vendor/lib64/vendor.qti.gnss@1.0_vendor.so
+# GPS - from LA.UM.7.2.r1-03600-sdm660.0
+vendor/bin/hw/vendor.qti.gnss@2.0-service|a4ee4d610a4200b2869da23147712d98e08787b3
+vendor/bin/loc_launcher|4698b17ca2ee3abdf2ecb338ca9c20d7c03e31bb
+vendor/bin/lowi-server|862c6f05ebb1480968f6680f348cdbbdd686b3bf
+vendor/bin/xtra-daemon|612bf548f5a77adf7ab3fa11e364cf01df15bde9
+vendor/etc/init/vendor.qti.gnss@2.0-service.rc|5fef1b6f19950a06dc1ffd11f161f9587bb84054
+vendor/lib64/hw/vendor.qti.gnss@2.0-impl.so|e5a1de972e61fe8accd1789f3c682f59147b7426
+vendor/lib64/libdataitems.so|9953df5109b208aecb38d1349e7c54b4c35de484
+vendor/lib64/libDRPlugin.so|792f322df1627627830e9bc520a9d4d8a0f2c2e8
+vendor/lib64/libdrplugin_client.so|fb1ef09dd35cb8af0b70def74db0f1f9fb6052fe
+vendor/lib64/libevent_observer.so|abcd216f4ca17a958cba03c360163680812e03ec
+vendor/lib64/libflp.so|60425cde4bf676053195e180d9dd6e9d64cfcd44
+vendor/lib64/libgeofence.so|a7fb8797a140f36d5a58d93955288bc9c2b3633e
+vendor/lib64/libizat_client_api.so|c2e56ad8fee9dc5fae5411df0416c6d2e3254a9b
+vendor/lib64/libizat_core.so|58abf7f7ce3ed211cf94d62d4bf162a0443ad7d1
+vendor/lib64/liblbs_core.so|4017ecb4df36604a924be7c9cd607acd9e0ea1a5
+vendor/lib64/libloc_api_v02.so|1e79901bcbf30045bf76b00040c0a6389066c04e
+vendor/lib64/libloc_ds_api.so|6c6206851ebc3af37630ea2ce3ea15d17fbb671e
+vendor/lib64/liblocationservice.so|6e970b59c8c6ac9907f61a7c986fc27026df4390
+vendor/lib64/liblocationservice_glue.so|9d0a753b34e0cfad7a37dced6e4dcf67575b478d
+vendor/lib64/liblowi_client.so|a3cfdc0e382d5cce89ff2cbde056f9cba62cfc5b
+vendor/lib64/libulp2.so|feac397b27bf1f160c00330965d08a7941823025
+vendor/lib64/libxtadapter.so|b54280f7d31890af4a714ee14498ecdbbf3b45f6
+vendor/lib64/libxtwifi_ulp_adaptor.so|f94db5e9236f26a3a200d5e299da95c942e1ba44
+vendor/lib64/vendor.qti.gnss@1.0.so|57776eb3b6dce92da21456eb59773fdee08cc8c4
+vendor/lib64/vendor.qti.gnss@1.1.so|5a4dacdfc1152a4e24b86753e0da1733b78cea9d
+vendor/lib64/vendor.qti.gnss@1.2.so|a94e6f1b54bd0e7e5706287d83050720e9590092
+vendor/lib64/vendor.qti.gnss@2.0.so|bf0019b8f3f275bab608833097547f3430390606
 
-# Graphics
-vendor/lib/egl/eglSubDriverAndroid.so
-vendor/lib/egl/libEGL_adreno.so
-vendor/lib/egl/libGLESv1_CM_adreno.so
-vendor/lib/egl/libGLESv2_adreno.so
-vendor/lib/egl/libq3dtools_adreno.so
-vendor/lib/egl/libQTapGLES.so
-vendor/lib/libadreno_utils.so
-vendor/lib/libbccQTI.so
-vendor/lib/libC2D2.so
-vendor/lib/libc2d30-a5xx.so
-vendor/lib/libc2d30_bltlib.so
-vendor/lib/libCB.so
-vendor/lib/libgsl.so
-vendor/lib/libllvm-glnext.so
-vendor/lib/libllvm-qcom.so
-vendor/lib/libllvm-qgl.so
-vendor/lib/libOpenCL.so
-vendor/lib/librs_adreno.so
-vendor/lib/librs_adreno_sha1.so
-vendor/lib/libRSDriver_adreno.so
-vendor/lib64/egl/eglSubDriverAndroid.so
-vendor/lib64/egl/libEGL_adreno.so
-vendor/lib64/egl/libGLESv1_CM_adreno.so
-vendor/lib64/egl/libGLESv2_adreno.so
-vendor/lib64/egl/libq3dtools_adreno.so
-vendor/lib64/egl/libq3dtools_esx.so
-vendor/lib64/egl/libQTapGLES.so
-vendor/lib64/libadreno_utils.so
-vendor/lib64/libbccQTI.so
-vendor/lib64/libC2D2.so
-vendor/lib64/libc2d30-a5xx.so
-vendor/lib64/libc2d30_bltlib.so
-vendor/lib64/libCB.so
-vendor/lib64/libgsl.so
-vendor/lib64/libllvm-glnext.so
-vendor/lib64/libllvm-qcom.so
-vendor/lib64/libllvm-qgl.so
-vendor/lib64/libOpenCL.so
-vendor/lib64/librs_adreno.so
-vendor/lib64/librs_adreno_sha1.so
-vendor/lib64/libRSDriver_adreno.so
+# Graphics - from LA.UM.7.2.r1-03600-sdm660.0
+vendor/lib64/egl/eglSubDriverAndroid.so|58fae3724cc729dcf4703b9d41a2028d101c4fdc
+vendor/lib64/egl/libEGL_adreno.so|8c7de13558f96022520834663021f8e68b430aac
+vendor/lib64/egl/libGLESv1_CM_adreno.so|95497830d4e08c02a3b6d82bc7623f926d2ef9ed
+vendor/lib64/egl/libGLESv2_adreno.so|0ca4153aaf04831b60ff46aff111ad40456ec1c8
+vendor/lib64/egl/libq3dtools_adreno.so|4bd18c19a4d8376311983303b0971a7aa1334897
+vendor/lib64/egl/libQTapGLES.so|fbef0ce0b36b67f4b2922876d89ab3af550ac69a
+vendor/lib64/libadreno_utils.so|4b9072beb7ce486163966d6a12d8edd7e92830b5
+vendor/lib64/libbccQTI.so|be1ae3a075c42dcb19bc6e1ecd7374f9aeae083c
+vendor/lib64/libC2D2.so|724684ac0e167bc729cbdea1ee9e21da248cfd58
+vendor/lib64/libc2d30_bltlib.so|aec01249095114006ce98857cf37fdcc47b5c3ae
+vendor/lib64/libCB.so|142f54601af17d9e2906526c9bee5860da871c7b
+vendor/lib64/libgsl.so|39bbfb10ef6c20feab0162ca2078d6bdab64ba6f
+vendor/lib64/libllvm-glnext.so|f2bfdf89502315b8bcf98f90d8a14b93308fb9ae
+vendor/lib64/libllvm-qcom.so|4e9dc8128379692407bf730f1b1ebdd3307bd5c0
+vendor/lib64/libllvm-qgl.so|113d9562ae65d6e6b036c68f282c1df226349dbd
+vendor/lib64/libOpenCL.so|1e78c9b98378803703835a3e1cbfabf43318f341
+vendor/lib64/librs_adreno_sha1.so|1ffc8b1c21bf011af09b6d986afc605a2bff9ab1
+vendor/lib64/librs_adreno.so|b6bc2274fc4079818f3124a694348a890c5d7b07
+vendor/lib64/libRSDriver_adreno.so|3d77fb21a40b98e908840aa89d044aea4f695694
+vendor/lib/egl/eglSubDriverAndroid.so|8fe6ec2e0dc9a752d42392f721ab57faa98cc351
+vendor/lib/egl/libEGL_adreno.so|bb2db6766b393777b8d37d81c2614e1166dd39af
+vendor/lib/egl/libGLESv1_CM_adreno.so|0930a64d8889c184de31a085539e1b8b28520a31
+vendor/lib/egl/libGLESv2_adreno.so|81c0f9f00cf1d7a09dc0dcc4a3a606c51beab218
+vendor/lib/egl/libq3dtools_adreno.so|a2506b94eb0fe3c2bccc7c8e6d8b8d21bd314ae8
+vendor/lib/egl/libQTapGLES.so|601a5a37959a60dab32d643abb0b463031bc64a5
+vendor/lib/libadreno_utils.so|34023494194932a62c70d82c60d4f6cf2e64b58f
+vendor/lib/libbccQTI.so|aa1220cad9df3c39c0c14c4a36546342cc518ad1
+vendor/lib/libC2D2.so|a110bf0568eef9e49b251b7750cf6e51c3c85969
+vendor/lib/libc2d30_bltlib.so|a5a9a807c2ff607d472a0d3f4242fe487230c79b
+vendor/lib/libCB.so|5f03d7d4c7fda41f2920e52b2bc1221f0f9b1d61
+vendor/lib/libgsl.so|2849df0ee52249c7d6e5ed869df064eff910c12c
+vendor/lib/libllvm-glnext.so|f57e128376592f6030ecff5d198d588bda4969d7
+vendor/lib/libllvm-qcom.so|ee5b5f6e78e7e82d277fb8a90b91bb2a3398447e
+vendor/lib/libOpenCL.so|fbf2d8e82973ea44583f1ca6a624163759167a73
+vendor/lib/librs_adreno_sha1.so|8469c32303ce0089a3362bbadbe9ed205d25c679
+vendor/lib/librs_adreno.so|41b2a1b35a8a9966728cea607bf5b7a8f568680d
+vendor/lib/libRSDriver_adreno.so|7e6b61cb975de2029ea6debe4fe442852da06e00
 
 # Graphics (SDM) - from LA.UM.7.2.r1-03600-sdm660.0
-vendor/lib/libqseed3.so|e29a10228dfd0cceee2e0ac59c27535d8e87db92
--vendor/lib/libsdm-disp-vndapis.so|66477d2b02a21c14dd734f6ad6dbfbe03ebfc52c
-vendor/lib64/libqseed3.so|d23c424bf8e5530049562c7e1d5d3cbda20ca79e
-vendor/lib64/libsdm-color.so|ceeb85c8e8c4f9eeb8a0b7e85869eac35bc4b9dc
-vendor/lib64/libsdm-diag.so|db8ca0ea417991ba22e8e7919d918d0a6b908ab3
--vendor/lib64/libsdm-disp-vndapis.so|7dd94cb4409a987761d0c5b0c0c977e24c548d74
-vendor/lib64/libsdmextension.so|79fc5ce1b3bd237eb60d9d508353acd6f6728998
-vendor/lib64/libtinyxml2_1.so|eae7c0526a56300dad04bce1a4e154a5869b3542
+vendor/lib/libqseed3.so|c60e08f5efa1e9aea339a7a5a6dccdc2d107f530
+-vendor/lib/libsdm-disp-vndapis.so|31b8df32d8091ef0390352b118e59bbde3d4acc1
+vendor/lib64/libqseed3.so|f95dd7b55de9401ce2f568e3ec18493daa5a6bfe
+vendor/lib64/libsdm-color.so|5c8cda1e79cd46cd29e45d689017e24a440800b7
+vendor/lib64/libsdm-diag.so|25bab19a8c4453b3d20e3e1a71a0e8d3675b17b4
+-vendor/lib64/libsdm-disp-vndapis.so|6b0ee25367d386ccc1b42ea941f1da439a48b3ec
+vendor/lib64/libsdmextension.so|616b323d407e002035849a8674f1b0efb3390725
+vendor/lib64/libtinyxml2_1.so|9d5179eda8ce70b9a4014b144f9d23d33509fddc
 
 # Graphics (Vulkan) - from taimen PPR1.180610.009
 vendor/lib/hw/vulkan.msm8998.so|f3655d2759ef626e3f1a2e8b0634300c4b6bab75
@@ -404,7 +401,7 @@ vendor/firmware/a540_zap.elf
 vendor/firmware/a540_zap.mdt
 
 # IMS
--app/ims/ims.apk|7e8415c27cd21b1951b4dd040c41de69d6f8b71a
+-app/ims/ims.apk|3806a916da8adc1e1787ec45a074a55968a0e752
 -app/uceShimService/uceShimService.apk
 etc/permissions/qti-vzw-ims-internal.xml:vendor/etc/permissions/qti-vzw-ims-internal.xml
 lib64/libdiag_system.so
@@ -454,13 +451,13 @@ vendor/lib/hw/sound_trigger.primary.msm8998.so
 vendor/lib/libsmwrapper.so
 
 # Media
--vendor/lib/libgpustats.so
-vendor/lib/libOmxEvrcDec.so
-vendor/lib/libOmxVpp.so
-vendor/lib/libvpphvx.so
-vendor/lib/libvpplibrary.so
-vendor/lib/libvqzip.so
--vendor/lib64/libgpustats.so
+-vendor/lib/libgpustats.so|703422d2fbdfa74c261be3413ae38d2775604358
+vendor/lib/libOmxEvrcDec.so|5a4b6e0ded018932b92c5562341eee39ffc14d7a
+vendor/lib/libOmxVpp.so|b9568fcbb44291ae4af2fec73980d54570c2cf2f
+vendor/lib/libvpphvx.so|7937bbf848ea2970ce61d4e5c75f31d7a27b867c
+vendor/lib/libvpplibrary.so|c7f5cd3c33c84188c4876699393747b1fe059205
+vendor/lib/libvqzip.so|c1c4f35456ff34b4baba373f18ed034a7d1e2721
+-vendor/lib64/libgpustats.so|79787eaed307f97ab3ce1864f6da39a096d9d153
 
 # NFC firmware
 vendor/lib/libpn553_fw.so|d032117e6645395327a5acd236bfd1bec56569c0
@@ -568,7 +565,7 @@ vendor/lib64/libsns_low_lat_stream_stub.so
 vendor/lib64/sensors.ssc.so
 
 # Thermal
-vendor/bin/msm_irqbalance|7ce3f35f7e0f12af1e2d36aa095d56a5ec88c51e
+vendor/bin/msm_irqbalance
 vendor/bin/thermal-engine
 vendor/etc/thermal-engine-8998-high.conf
 vendor/etc/thermal-engine-8998-map.conf

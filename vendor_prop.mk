@@ -29,7 +29,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	persist.vendor.audio.fluence.speaker=true \
 	persist.vendor.audio.fluence.voicecall=true \
 	persist.vendor.audio.fluence.voicerec=false \
-	persist.vendor.audio.hw.binder.size_kbyte=1024 \
 	persist.vendor.audio.ras.enabled=false \
 	persist.vendor.bt.a2dp_offload_cap=sbc-aptx-aptxhd-aac \
 	ro.config.vc_call_vol_steps=11 \
@@ -57,8 +56,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
 	qcom.bluetooth.soc=cherokee \
- ro.vendor.bluetooth.emb_wp_mode=true \
- ro.vendor.bluetooth.wipower=true
+	ro.bluetooth.hfp.ver=1.6
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -76,11 +74,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Display
 PRODUCT_PROPERTY_OVERRIDES += \
+	debug.gralloc.enable_fb_ubwc=1 \
 	debug.sf.enable_hwc_vds=1 \
 	debug.sf.hw=1 \
 	debug.sf.latch_unsignaled=1 \
 	ro.opengles.version=196610 \
-	ro.sf.lcd_density=480 \
+	ro.sf.lcd_density=420 \
 	vendor.display.enable_default_color_mode=0 \
 	vendor.display.disable_skip_validate=1 \
 	vendor.display.rotator_downscale=1 \
@@ -126,8 +125,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Perf
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.vendor.extension_library=libqti-perfd-client.so \
-	ro.vendor.qti.core_ctl_max_cpu=4 \
-	ro.vendor.qti.core_ctl_min_cpu=0 \
 	ro.vendor.qti.sys.fw.bg_apps_limit=60
 
 # Radio

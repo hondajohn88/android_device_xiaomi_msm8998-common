@@ -105,9 +105,9 @@ on charger
 
     load_system_props
 
-    start hvdcp_opti
-    start thermal-engine
-    start qcom-post-boot
+    start vendor.hvdcp_opti
+    start vendor.thermal-engine
+    start vendor.qcom-post-boot
 
     setprop sys.usb.configfs 1
     setprop sys.usb.config adb
@@ -140,9 +140,6 @@ on property:sys.boot_completed=1
     write /dev/cpuset/background/cpus 0-1
     write /dev/cpuset/system-background/cpus 0-3
     write /dev/cpuset/restricted/cpus 0-3
-
-    # Enable oom_reaper
-    write /sys/module/lowmemorykiller/parameters/oom_reaper 1
 
     # Enable ZRAM on boot_complete
     swapon_all /vendor/etc/fstab.qcom

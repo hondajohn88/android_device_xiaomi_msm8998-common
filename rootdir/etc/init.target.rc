@@ -27,9 +27,6 @@
 #
 #
 
-on early-init
-    symlink /data/tombstones /tombstones
-
 on init
     # QSEE rpmb listener need symlink for bootdevice
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -51,6 +48,9 @@ on init
     write /sys/bus/msm_subsys/devices/subsys6/restart_level RELATED
 
 on fs
+    # Start HW service manager early
+    start hwservicemanager
+
     mount_all /vendor/etc/fstab.qcom --early
 
     restorecon_recursive /persist
@@ -58,8 +58,8 @@ on fs
     mkdir /persist/wlan_bt 0770 system system
     mkdir /persist/audio 0755 system system
 
-    # Start HW service manager early
-    start hwservicemanager
+    # for android.hardware.health@2.0-service.xiaomi_msm8998 cycle count backup
+    mkdir /persist/battery 0700 system system
 
 on post-fs
     wait_for_prop sys.listeners.registered true
@@ -85,14 +85,14 @@ on late-fs
     write /sys/block/sde/queue/nr_requests 256
     setprop sys.io.scheduler "cfq"
 
+    # Wait for hwservicemanager ready since fsck might be triggered in mount_all --late
+    # In such case, init won't responce the property_set from hwservicemanager and then
+    # cause services for bootanim not running.
+    wait_for_prop hwservicemanager.ready true
+    # Mount RW partitions which need run fsck
     mount_all /vendor/etc/fstab.qcom --late
 
 on post-fs-data
-    mkdir /tombstones/modem 0771 system system
-    mkdir /tombstones/lpass 0771 system system
-    mkdir /tombstones/wcnss 0771 system system
-    mkdir /tombstones/dsps 0771 system system
-
     # Create directory for thermal engine
     mkdir /data/thermal 0771 system system
     mkdir /data/thermal/config 0771 system system
@@ -181,6 +181,6 @@ service vendor.hvdcp_opti /vendor/bin/hvdcp_opti
 
 service vendor.readmac /vendor/bin/readmac
     class main
-    user root
-    group oem_2901
+    user system
+    group system net_raw
     oneshot
