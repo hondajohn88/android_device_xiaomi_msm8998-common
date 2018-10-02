@@ -26,7 +26,10 @@
 
 #include <dlfcn.h>
 
-#define RIL_LIB_NAME "libril-qc-qmi-1.so"
+#define RIL_LIB_PATH "/system/vendor/lib64/libril-qc-qmi-1.so"
+
+#define RADIO_TECH_HSPAP_STRING "15"
+#define RADIO_TECH_DC_HSPAP_STRING "20"
 #define RADIO_TECH_DC_HSPAP 20
 
 /*
@@ -108,9 +111,9 @@ const RIL_RadioFunctions* RIL_Init(const struct RIL_Env* env, int argc, char** a
     /*
      * Open the qmi RIL.
      */
-    qmiRil = dlopen(RIL_LIB_NAME, RTLD_LOCAL);
+    qmiRil = dlopen(RIL_LIB_PATH, RTLD_LOCAL);
     if (!qmiRil) {
-        ALOGE("%s: failed to load %s: %s\n", __func__, RIL_LIB_NAME, dlerror());
+        ALOGE("%s: failed to load %s: %s\n", __func__, RIL_LIB_PATH, dlerror());
         return NULL;
     }
 
