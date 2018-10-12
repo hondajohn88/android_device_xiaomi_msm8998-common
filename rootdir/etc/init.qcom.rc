@@ -140,8 +140,29 @@ on post-fs-data
 
     # Mark the copy complete flag to not completed
     write /data/vendor/radio/copy_complete 0
-    chown radio radio /data/vendor/radio/copy_complete
+    chown radio.radio /data/vendor/radio/copy_complete
     chmod 0660 /data/vendor/radio/copy_complete
+
+    # Make modem config folder and restore data connection for VoLTE
+    mkdir /data/vendor/radio/modem_config
+    chmod 770 /data/vendor/radio/modem_config
+    chown -hR radio.radio /data/vendor/radio/modem_config
+    chown radio.radio /data/vendor/radio/ver_info.txt
+    chown radio.radio /data/vendor/radio/modem_config/mbn_ota.txt
+
+    # Copy prebuilt qcril.db files always
+    copy /vendor/radio/qcril_database/qcril.db /data/vendor/radio/qcril_prebuilt.db
+    chown radio.radio /data/vendor/radio/qcril_prebuilt.db
+    chmod 0660 /data/vendor/radio/qcril_prebuilt.db
+
+    # File flags for prebuilt ril db file
+    write /data/vendor/radio/prebuilt_db_support 1
+    chown radio.radio /data/vendor/radio/prebuilt_db_support
+    chmod 0400 /data/vendor/radio/prebuilt_db_support
+
+    write /data/vendor/radio/db_check_done 0
+    chown radio.radio /data/vendor/radio/db_check_done
+    chmod 0660 /data/vendor/radio/db_check_done
 
     # Setup permission for powerHAL
     chown system system /dev/stune/top-app/schedtune.boost
@@ -257,25 +278,6 @@ on boot
 
     # Create IOP deamon related dirs
     mkdir /data/vendor/iop 0770 root system
-
-    # Mark the copy complete flag to not completed
-    write /data/vendor/radio/copy_complete 0
-    chown radio radio /data/vendor/radio/copy_complete
-    chmod 0660 /data/vendor/radio/copy_complete
-
-    # Copy prebuilt qcril.db files always
-    copy /vendor/radio/qcril_database/qcril.db /data/vendor/radio/qcril_prebuilt.db
-    chown radio radio /data/vendor/radio/qcril_prebuilt.db
-    chmod 0660 /data/vendor/radio/qcril_prebuilt.db
-
-    # File flags for prebuilt ril db file
-    write /data/vendor/radio/prebuilt_db_support 1
-    chown radio radio /data/vendor/radio/prebuilt_db_support
-    chmod 0400 /data/vendor/radio/prebuilt_db_support
-
-    write /data/vendor/radio/db_check_done 0
-    chown radio radio /data/vendor/radio/db_check_done
-    chmod 0660 /data/vendor/radio/db_check_done
 
     # Add torch node for cit
     chown system system /sys/class/leds/led:torch_0/brightness

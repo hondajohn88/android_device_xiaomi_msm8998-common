@@ -25,6 +25,10 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+# Permission for VoLTE fix
+/data/vendor/radio/*      0770   radio      radio
+/firmware/image/modem_pr/* 0770  radio      radio
+
 # The DIAG device node is not world writable/readable
 /dev/diag                 0660   system     oem_2901
 
@@ -125,6 +129,7 @@
 /dev/msm_vidc_dec_sec     0660   system     audio
 /dev/msm_vidc_enc         0660   system     audio
 /dev/msm_rotator          0660   system     system
+/dev/hw_random            0600   root       root
 /dev/sdsprpc-smd          0660   system     system
 
 # Permissions for audio
