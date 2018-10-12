@@ -124,6 +124,11 @@ TARGET_QCOM_AUDIO_VARIANT := caf-msm8998
 TARGET_QCOM_MEDIA_VARIANT := caf-msm8998
 TARGET_QCOM_DISPLAY_VARIANT := caf-msm8998
 
+PRODUCT_SOONG_NAMESPACES += \
+    hardware/qcom/audio-$(TARGET_QCOM_AUDIO_VARIANT) \
+    hardware/qcom/display-$(TARGET_QCOM_DISPLAY_VARIANT) \
+    hardware/qcom/media-$(TARGET_QCOM_MEDIA_VARIANT)
+
 # Camera
 USE_CAMERA_STUB := true
 TARGET_USES_MEDIA_EXTENSIONS := true
@@ -223,6 +228,7 @@ WIFI_DRIVER_FW_PATH_STA := "sta"
 WIFI_DRIVER_FW_PATH_P2P := "p2p"
 WIFI_DRIVER_OPERSTATE_PATH := "/sys/class/net/wlan0/operstate"
 WPA_SUPPLICANT_VERSION := VER_0_8_X
+WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 
 # Inherit from proprietary files
 include vendor/xiaomi/msm8998-common/BoardConfigVendor.mk
