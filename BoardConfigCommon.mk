@@ -43,8 +43,13 @@ BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_RAMDISK_OFFSET := 0x01000000
-TARGET_KERNEL_CLANG_COMPILE := true
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_SOURCE := kernel/xiaomi/msm8998
+
+# Linaro
+KERNEL_TOOLCHAIN := /home/hondajohn88/crDroid-p/prebuilts/gcc/linux-x86/aarch64/gcc-linaro-5.5.0/bin
+KERNEL_TOOLCHAIN_PREFIX := aarch64-linux-gnu-
 
 BOARD_KERNEL_CMDLINE := androidboot.console=ttyMSM0 androidboot.hardware=qcom
 BOARD_KERNEL_CMDLINE += user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3
@@ -113,7 +118,7 @@ AUDIO_FEATURE_ENABLED_PERF_HINTS := true
 
 AUDIO_USE_LL_AS_PRIMARY_OUTPUT := true
 
-USE_CUSTOM_AUDIO_POLICY := 1
+#USE_CUSTOM_AUDIO_POLICY := 1
 USE_XML_AUDIO_POLICY_CONF := 1
 
 # Bluetooth
@@ -182,6 +187,11 @@ TARGET_USES_INTERACTION_BOOST := true
 
 # QCOM
 BOARD_USES_QCOM_HARDWARE := true
+TARGET_USE_SDCLANG := true
+SDCLANG_LTO_DEFS := device/qcom/common/sdllvm-lto-defs.mk
+
+SDCLANG := true
+SDCLANG_PATH := prebuilts/snapdragon-llvm-4.0.2-linux64/toolchains/llvm-Snapdragon_LLVM_for_Android_4.0/prebuilt/linux-x86_64/bin
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/rootdir/etc/fstab.qcom
