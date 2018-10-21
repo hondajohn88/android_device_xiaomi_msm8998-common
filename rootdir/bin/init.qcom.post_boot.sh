@@ -27,34 +27,6 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-#
-# Make modem config folder and copy firmware config to that folder for RIL
-#
-if [ -f /data/vendor/radio/ver_info.txt ]; then
-    prev_version_info=`cat /data/vendor/radio/ver_info.txt`
-else
-    prev_version_info=""
-fi
-
-cur_version_info=`cat /firmware/verinfo/ver_info.txt`
-if [ ! -f /firmware/verinfo/ver_info.txt -o "$prev_version_info" != "$cur_version_info" ]; then
-    rm -rf /data/vendor/radio/modem_config
-    mkdir /data/vendor/radio/modem_config
-    chmod 770 /data/vendor/radio/modem_config
-    cp -r /firmware/image/modem_pr/mcfg/configs/* /data/vendor/radio/modem_config
-    chown -hR radio.radio /data/vendor/radio/modem_config
-    cp /firmware/verinfo/ver_info.txt /data/vendor/radio/ver_info.txt
-    chown radio.radio /data/vendor/radio/ver_info.txt
-fi
-cp /firmware/image/modem_pr/mbn_ota.txt /data/vendor/radio/modem_config
-chown radio.radio /data/vendor/radio/modem_config/mbn_ota.txt
-echo 1 > /data/vendor/radio/copy_complete
-
-if [ -f /data/system/users/0/settings_global.xml ]; then
-    sed -i 's/"multi_sim_data_call" value="1"/"multi_sim_data_call" value="-1"/g' /data/system/users/0/settings_global.xml
-    restorecon /data/system/users/0/settings_global.xml
-fi
-
 # Enable bus-dcvs
 for cpubw in /sys/class/devfreq/*qcom,cpubw*
 do
