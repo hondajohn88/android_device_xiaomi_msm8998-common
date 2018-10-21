@@ -138,13 +138,31 @@ on post-fs-data
     mkdir /data/vendor/nfc 0770 nfc nfc
     mkdir /data/vendor/nfc/param 0770 nfc nfc
 
-    # Create /data/vendor/time folder for time-services
-    mkdir /data/vendor/time/ 0700 system system
-
     # Mark the copy complete flag to not completed
     write /data/vendor/radio/copy_complete 0
-    chown radio radio /data/vendor/radio/copy_complete
+    chown radio.radio /data/vendor/radio/copy_complete
     chmod 0660 /data/vendor/radio/copy_complete
+
+    # Make modem config folder and restore data connection for VoLTE
+    mkdir /data/vendor/radio/modem_config
+    chmod 770 /data/vendor/radio/modem_config
+    chown -hR radio.radio /data/vendor/radio/modem_config
+    chown radio.radio /data/vendor/radio/ver_info.txt
+    chown radio.radio /data/vendor/radio/modem_config/mbn_ota.txt
+
+    # Copy prebuilt qcril.db files always
+    copy /vendor/radio/qcril_database/qcril.db /data/vendor/radio/qcril_prebuilt.db
+    chown radio.radio /data/vendor/radio/qcril_prebuilt.db
+    chmod 0660 /data/vendor/radio/qcril_prebuilt.db
+
+    # File flags for prebuilt ril db file
+    write /data/vendor/radio/prebuilt_db_support 1
+    chown radio.radio /data/vendor/radio/prebuilt_db_support
+    chmod 0400 /data/vendor/radio/prebuilt_db_support
+
+    write /data/vendor/radio/db_check_done 0
+    chown radio.radio /data/vendor/radio/db_check_done
+    chmod 0660 /data/vendor/radio/db_check_done
 
     # Setup permission for powerHAL
     chown system system /dev/stune/top-app/schedtune.boost
@@ -216,6 +234,12 @@ on boot
     # Create NETMGR daemon socket area
     mkdir /dev/socket/netmgr 0750 radio radio
 
+    # LED torch permissions
+    chmod 0666 /sys/class/leds/led:torch_0/brightness
+    chmod 0666 /sys/class/leds/led:torch_1/brightness
+    chmod 0666 /sys/class/leds/led:switch_0/brightness
+    chmod 0666 /sys/class/leds/led:switch_1/brightness
+
     # KeyDisabler permissions
     chown system system /sys/devices/soc/soc:fingerprint_fpc/enable_key_events
     chown system system /sys/devices/soc/soc:fingerprint_goodix/enable_key_events
@@ -228,6 +252,10 @@ on boot
     chmod 0660 /proc/touchpanel/capacitive_keys_enable
     chmod 0660 /proc/touchpanel/double_tap_enable
     chmod 0660 /proc/touchpanel/reversed_keys_enable
+
+    # Vibrator permissions
+    chown root system /sys/class/timed_output/vibrator/vtg_level
+    chmod 0660 /sys/class/timed_output/vibrator/vtg_level
 
     # Assign TCP buffer thresholds to be ceiling value of technology maximums
     # Increased technology maximums should be reflected here.
@@ -248,6 +276,13 @@ on boot
     # Wifi firmware reload path
     chown wifi wifi /sys/module/wlan/parameters/fwpath
 
+    # Create IOP deamon related dirs
+    mkdir /data/vendor/iop 0770 root system
+
+    # Add torch node for cit
+    chown system system /sys/class/leds/led:torch_0/brightness
+    chown system system /sys/class/leds/led:torch_1/brightness
+    chown system system /sys/class/leds/led:switch_0/brightness
 on property:sys.boot_completed=1
     # Used by sound trigger HAL
     chown media audio /sys/kernel/wdsp0/boot
@@ -348,9 +383,9 @@ on property:sys.powerctl=*
     stop vendor.cnss-daemon
 
 service vendor.loc_launcher /vendor/bin/loc_launcher
+    # loc_launcher will start as root and set its uid to gps
     class late_start
-    user gps
-    group gps
+    group gps inet diag wifi
     writepid /dev/cpuset/system-background/tasks
 
 service vendor.qcom-sh /vendor/bin/init.qcom.sh
@@ -392,3 +427,6 @@ service vendor.time_daemon /vendor/bin/time_daemon
     user root
     group root
     writepid /dev/cpuset/system-background/tasks
+# Set vendor-ril lib path based on Meta version
+on property:vendor.rild.libpath=*
+    setprop rild.libpath ${vendor.rild.libpath}
