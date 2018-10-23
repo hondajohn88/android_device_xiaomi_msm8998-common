@@ -28,9 +28,7 @@
    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <cstdio>
 
 #include <android-base/file.h>
 #include <android-base/properties.h>
@@ -79,11 +77,5 @@ static void init_alarm_boot_properties()
 
 void vendor_load_properties()
 {
-    std::string platform;
-
-    platform = GetProperty("ro.board.platform", "");
-    if (platform != ANDROID_TARGET)
-        return;
-
     init_alarm_boot_properties();
 }

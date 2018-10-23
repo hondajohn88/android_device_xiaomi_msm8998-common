@@ -31,6 +31,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	persist.vendor.audio.fluence.voicerec=false \
 	persist.vendor.audio.ras.enabled=false \
 	persist.vendor.bt.a2dp_offload_cap=sbc-aptx-aptxhd-aac \
+	ro.af.client_heap_size_kbyte=7168 \
 	ro.config.vc_call_vol_steps=11 \
 	ro.vendor.audio.sdk.fluencetype=fluence \
 	ro.vendor.audio.sdk.ssr=false \
@@ -60,12 +61,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
+	persist.camera.eis.enable=1 \
 	persist.camera.HAL3.enabled=1 \
 	persist.camera.set.afd=4 \
 	persist.camera.xm.green.b=0.96 \
 	persist.camera.xm.green.r=0.97 \
 	persist.dualcam.lpm.enable=1 \
-	vendor.camera.aux.packagelist=org.codeaurora.snapcam,com.android.camera,com.miui.cit \
+	vendor.camera.aux.packagelist=com.android.camera,com.google.android.GoogleCameraTele \
 	vidc.enc.dcvs.extra-buff-count=2
 
 # CNE
@@ -103,12 +105,17 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Memory
 PRODUCT_PROPERTY_OVERRIDES += \
-	dalvik.vm.heapgrowthlimit=256m \
 	dalvik.vm.heapmaxfree=8m \
-	dalvik.vm.heapminfree=4m \
+	dalvik.vm.heapminfree=512k \
 	dalvik.vm.heapsize=512m \
-	dalvik.vm.heapstartsize=16m \
+	dalvik.vm.heapstartsize=8m \
 	dalvik.vm.heaptargetutilization=0.75
+
+# Memory (CAF)
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.vendor.qti.sys.fw.bg_apps_limit=60 \
+	ro.vendor.qti.sys.fw.bservice_enable=true \
+	sys.tp.grip_enable=0
 
 # Network manager
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -124,8 +131,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Perf
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.vendor.extension_library=libqti-perfd-client.so \
-	ro.vendor.qti.sys.fw.bg_apps_limit=60
+	ro.vendor.extension_library=libqti-perfd-client.so
 
 # Radio
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -133,16 +139,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	persist.radio.apm_sim_not_pwdn=1 \
 	persist.radio.dynamic_sar=false \
 	persist.radio.multisim.config=dsds \
-        persist.radio.NO_STAPA=1 \
-        persist.radio.redir_party_num=1 \
-        persist.radio.report_codec=1 \
-        persist.radio.VT_HYBRID_ENABLE=1 \
 	persist.rmnet.data.enable=true \
+	persist.vendor.ims.dropset_feature=0 \
 	persist.vendor.radio.add_power_save=1 \
 	persist.vendor.radio.custom_ecc=1 \
 	persist.vendor.radio.force_on_dc=true \
 	persist.vendor.radio.rat_on=combine \
-        ril.subscription.types=RUIM \
 	persist.vendor.radio.redir_party_num=1 \
 	persist.vendor.radio.report_codec=1 \
 	persist.vendor.radio.sib16_support=1 \
